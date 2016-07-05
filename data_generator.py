@@ -153,20 +153,43 @@ class StringRenderer:
 
         return image
 
+    # TODO: make more advanded text rendering with correct kerning, etc
     def render_string(self, string):
 
         text_image = Image.new('F', self.render_image_size, color=0)
         draw = ImageDraw.Draw(text_image)
 
-        # TODO: make more advanded text rendering with correct kerning, embossing, etc
         # Draw text at random position
         text_position = (np.random.randint(-self.image_padding, self.image_size[0]),
                          np.random.randint(0, self.image_size[1] + self.image_padding))
         font = self.rnd.choice(self.fonts)
         draw.text(text_position, string, 1, font=font)
 
-        # Convert the image to an numpy array and add some random rotation
+        # Convert the image to an numpy array 
         text_image = np.array(text_image, dtype=np.float32)
+
+        # Emboss text
+        # http://stackoverflow.com/questions/2034037/image-embossing-in-python-with-pil-adding-depth-azimuth-etc
+        ele = np.pi/2.2 # elevation in radians
+        azi = np.pi/4.  # azimuth in radians
+        dep = 10.       # depth (0-100)
+        grad = np.gradient(text_image)
+        grad_x, grad_y = grad
+        gd = np.cos(ele)
+        dx = gd*np.cos(azi)
+        dy = gd**np.sin(azi)
+        dz = np.sin(ele)
+        grad_x = grad_x*dep/100
+        grad_y = grad_y*dep/100
+        leng = np.sqrt(grad_x**2 + grad_y**2 + 1.)
+        uni_x = grad_x/leng
+        uni_y = grad_y/leng
+        uni_z = 1./leng
+        a2 = 255*(dx*uni_x + dy*uni_y + dz*uni_z)
+        a2 = a2.clip(0,255)
+        text_image = a2
+
+        # Add some random rotation
         text_image, angle = self.rotate_image(text_image)
 
         # Crop the image to the desired size
