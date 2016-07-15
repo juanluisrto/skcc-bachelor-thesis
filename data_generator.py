@@ -54,7 +54,7 @@ class StringRenderer:
                  max_blur_sigma=1.0,
                  max_background_mixture=0.75,
                  background_probability=0.75,
-                 max_emboss_depth=10,
+                 max_emboss_depth=100,
                  max_emboss_azimuth=2 * np.pi,
                  max_emboss_elevation=0.5 * np.pi,
                  random_state=None):
@@ -160,11 +160,10 @@ class StringRenderer:
         return image
 
     def emboss_image(self, image):
-        # Emboss text
         # http://stackoverflow.com/questions/2034037/image-embossing-in-python-with-pil-adding-depth-azimuth-etc
-        ele = self.rnd.rand() * self.max_emboss_elevation  # elevation in radians
-        azi = self.rnd.rand() * self.max_emboss_azimuth  # azimuth in radians
-        dep = self.rnd.rand() * self.max_emboss_depth  # depth (0-100)
+        ele = self.rnd.rand() * self.max_emboss_elevation # elevation in radians. Allowed range: 0 - pi
+        azi = self.rnd.rand() * self.max_emboss_azimuth  # azimuth in radians.  Allowed range: 0 - 2*pi
+        dep = self.rnd.rand() * self.max_emboss_depth  # depth. Allowed range: 0 - 100
 
         # find the gradient
         grad_x, grad_y = np.gradient(image)
