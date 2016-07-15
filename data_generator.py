@@ -54,6 +54,9 @@ class StringRenderer:
                  max_blur_sigma=1.0,
                  max_background_mixture=0.75,
                  background_probability=0.75,
+                 max_emboss_depth=10,
+                 max_emboss_azimuth=2 * np.pi,
+                 max_emboss_elevation=0.5 * np.pi,
                  random_state=None):
 
         self.fonts_folder = fonts_folder
@@ -68,6 +71,9 @@ class StringRenderer:
         self.max_blur_sigma = max_blur_sigma
         self.max_background_mixture = max_background_mixture
         self.background_probability = background_probability
+        self.max_emboss_depth = max_emboss_depth
+        self.max_emboss_azimuth = max_emboss_azimuth
+        self.max_emboss_elevation = max_emboss_elevation
         self.num_background_variations = 3
 
         # Supplie a RandomState object if you want to controll the seed.
@@ -153,6 +159,40 @@ class StringRenderer:
 
         return image
 
+    def emboss_image(self, image):
+        # Emboss text
+        # http://stackoverflow.com/questions/2034037/image-embossing-in-python-with-pil-adding-depth-azimuth-etc
+        ele = self.rnd.rand() * self.max_emboss_elevation  # elevation in radians
+        azi = self.rnd.rand() * self.max_emboss_azimuth  # azimuth in radians
+        dep = self.rnd.rand() * self.max_emboss_depth  # depth (0-100)
+
+        # find the gradient
+        grad_x, grad_y = np.gradient(image)
+
+        # adjusting the gradient by the "depth" factor
+        grad_x = grad_x * dep / 100.
+        grad_y = grad_y * dep / 100.
+
+        # getting the unit incident ray
+        gd = np.cos(ele)  # length of projection of ray on ground plane
+        dx = gd * np.cos(azi)
+        dy = gd * np.sin(azi)
+        dz = np.sin(ele)
+
+        # finding the unit normal vectors for the image
+        leng = np.sqrt(grad_x ** 2 + grad_y ** 2 + 1.)
+
+        uni_x = grad_x / leng
+        uni_y = grad_y / leng
+        uni_z = 1. / leng
+
+        # take the dot product of unit
+        a2 = (dx * uni_x + dy * uni_y + dz * uni_z)
+
+        image = a2.clip(0, 255)
+        image = normalize_pixels(image, invert=False)
+        return image
+
     # TODO: make more advanded text rendering with correct kerning, etc
     def render_string(self, string):
 
@@ -168,45 +208,28 @@ class StringRenderer:
         # Convert the image to an numpy array 
         text_image = np.array(text_image, dtype=np.float32)
 
-        # Emboss text
-        # http://stackoverflow.com/questions/2034037/image-embossing-in-python-with-pil-adding-depth-azimuth-etc
-        ele = np.pi/2.2 # elevation in radians
-        azi = np.pi/4.  # azimuth in radians
-        dep = 10.       # depth (0-100)
-        grad = np.gradient(text_image)
-        grad_x, grad_y = grad
-        gd = np.cos(ele)
-        dx = gd*np.cos(azi)
-        dy = gd**np.sin(azi)
-        dz = np.sin(ele)
-        grad_x = grad_x*dep/100
-        grad_y = grad_y*dep/100
-        leng = np.sqrt(grad_x**2 + grad_y**2 + 1.)
-        uni_x = grad_x/leng
-        uni_y = grad_y/leng
-        uni_z = 1./leng
-        a2 = 255*(dx*uni_x + dy*uni_y + dz*uni_z)
-        a2 = a2.clip(0,255)
-        text_image = a2
-
         # Add some random rotation
         text_image, angle = self.rotate_image(text_image)
 
         # Crop the image to the desired size
-        target_image = text_image[self.image_padding:self.image_padding + self.image_size[0],
+        text_image = text_image[self.image_padding:self.image_padding + self.image_size[0],
                                   self.image_padding:self.image_padding + self.image_size[1]]
 
+        # Emboss text
+        image = self.emboss_image(text_image)
+
         # Add random distortions
-        image = self.add_distortions(target_image)
+        image = self.add_distortions(image)
 
         # Normalizes the pixel values between 0 - 1.0.
         image = normalize_pixels(image, invert=False)
 
         # Rescale the target image to the target size if needed
+        target_image = text_image
         if self.image_size != self.target_size:
             target_image = np.float32(scipy.misc.imresize(target_image, self.target_size, interp='bilinear'))
 
-        # Binarize the text image
+        # Binarize the target image
         mask = target_image > 0.25
         target_image[mask] = 1
         target_image[np.logical_not(mask)] = 0
