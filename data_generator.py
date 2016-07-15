@@ -161,7 +161,7 @@ class StringRenderer:
 
     def emboss_image(self, image):
         # http://stackoverflow.com/questions/2034037/image-embossing-in-python-with-pil-adding-depth-azimuth-etc
-        ele = self.rnd.rand() * self.max_emboss_elevation # elevation in radians. Allowed range: 0 - pi
+        ele = self.rnd.rand() * self.max_emboss_elevation # elevation in radians. Allowed range: 0 - 0.5*pi
         azi = self.rnd.rand() * self.max_emboss_azimuth  # azimuth in radians.  Allowed range: 0 - 2*pi
         dep = self.rnd.rand() * self.max_emboss_depth  # depth. Allowed range: 0 - 100
 
