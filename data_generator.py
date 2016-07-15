@@ -186,7 +186,7 @@ class StringRenderer:
         uni_z = 1. / leng
 
         # take the dot product of unit
-        a2 = (dx * uni_x + dy * uni_y + dz * uni_z)
+        a2 = 255 * (dx * uni_x + dy * uni_y + dz * uni_z)
 
         image = a2.clip(0, 255)
         image = normalize_pixels(image, invert=False)
