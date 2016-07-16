@@ -303,6 +303,6 @@ class StringImageBatchGenerator:
             except Exception as ex:
                 # To make sure training does not fail just because some exception, catch it here.
                 # If there is an error, just generate a new batch...
-                print("Data generator exception", ex, file=sys.stderr)
+                print "Data generator exception", ex
                 if raise_exceptions:
                     raise
