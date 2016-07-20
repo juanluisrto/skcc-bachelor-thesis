@@ -1,11 +1,17 @@
 # Slagkryssaren Credit card #
 
-This README would normally document whatever steps are necessary to get your application up and running.
 
-### What is this repository for? ###
+This repo contains the Slagkryssaren Credit Card Reader.
+The purpose is to use Deep Learning to create a Credit Card reader which works on standard smart-phones.
 
-* Quick summary
-* Version
+Getting started:
+Go to local workspace folder.
+```
+$ jupyter notebook
+```
+
+
+---------------
 * [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
 
 ### How do I get set up? ###
