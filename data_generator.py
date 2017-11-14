@@ -153,43 +153,45 @@ class StringRenderer:
         image = target_image.copy()
 
         # TODO: add more distortions here...
+        image = self.add_background(image)
         image = self.add_noise(image)
         image = self.add_blur(image)
-        image = self.add_background(image)
 
         return image
 
     def emboss_image(self, image):
-        # http://stackoverflow.com/questions/2034037/image-embossing-in-python-with-pil-adding-depth-azimuth-etc
-        ele = self.rnd.rand() * self.max_emboss_elevation # elevation in radians. Allowed range: 0 - 0.5*pi
-        azi = self.rnd.rand() * self.max_emboss_azimuth  # azimuth in radians.  Allowed range: 0 - 2*pi
-        dep = self.rnd.rand() * self.max_emboss_depth  # depth. Allowed range: 0 - 100
+        if self.rnd.rand() > 0.05:
+            # http://stackoverflow.com/questions/2034037/image-embossing-in-python-with-pil-adding-depth-azimuth-etc
+            ele = self.rnd.rand() * self.max_emboss_elevation # elevation in radians. Allowed range: 0 - 0.5*pi
+            azi = self.rnd.rand() * self.max_emboss_azimuth  # azimuth in radians.  Allowed range: 0 - 2*pi
+            dep = self.rnd.rand() * self.max_emboss_depth  # depth. Allowed range: 0 - 100
 
-        # find the gradient
-        grad_x, grad_y = np.gradient(image)
+            # find the gradient
+            grad_x, grad_y = np.gradient(image)
 
-        # adjusting the gradient by the "depth" factor
-        grad_x = grad_x * dep / 100.
-        grad_y = grad_y * dep / 100.
+            # adjusting the gradient by the "depth" factor
+            grad_x = grad_x * dep / 100.
+            grad_y = grad_y * dep / 100.
 
-        # getting the unit incident ray
-        gd = np.cos(ele)  # length of projection of ray on ground plane
-        dx = gd * np.cos(azi)
-        dy = gd * np.sin(azi)
-        dz = np.sin(ele)
+            # getting the unit incident ray
+            gd = np.cos(ele)  # length of projection of ray on ground plane
+            dx = gd * np.cos(azi)
+            dy = gd * np.sin(azi)
+            dz = np.sin(ele)
 
-        # finding the unit normal vectors for the image
-        leng = np.sqrt(grad_x ** 2 + grad_y ** 2 + 1.)
+            # finding the unit normal vectors for the image
+            leng = np.sqrt(grad_x ** 2 + grad_y ** 2 + 1.)
 
-        uni_x = grad_x / leng
-        uni_y = grad_y / leng
-        uni_z = 1. / leng
+            uni_x = grad_x / leng
+            uni_y = grad_y / leng
+            uni_z = 1. / leng
 
-        # take the dot product of unit
-        a2 = 255 * (dx * uni_x + dy * uni_y + dz * uni_z)
+            # take the dot product of unit
+            a2 = 255 * (dx * uni_x + dy * uni_y + dz * uni_z)
 
-        image = a2.clip(0, 255)
-        image = normalize_pixels(image, invert=False)
+            image = a2.clip(0, 255)
+            image = normalize_pixels(image, invert=False)
+
         return image
 
     # TODO: make more advanded text rendering with correct kerning, etc
@@ -267,8 +269,8 @@ class StringImageBatchGenerator:
             targets.append(target_mask)
             images.append(image)
 
-        images = np.expand_dims(images, axis=1)
-        targets = np.expand_dims(targets, axis=1)
+        images = np.expand_dims(images, axis=3)
+        targets = np.expand_dims(targets, axis=3)
 
         return images, targets
 
@@ -303,6 +305,6 @@ class StringImageBatchGenerator:
             except Exception as ex:
                 # To make sure training does not fail just because some exception, catch it here.
                 # If there is an error, just generate a new batch...
-                print "Data generator exception", ex
+                print("Data generator exception", ex)
                 if raise_exceptions:
                     raise

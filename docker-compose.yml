@@ -1,9 +1,11 @@
-notebook:
-  build: .
-  command: "/run_jupyter.sh /skcc"
-  ports:
-    - "8888:8888"
-  volumes:
-    - .:/skcc
-  working_dir: "/skcc"
+version: '3'
+services:
+  notebook:
+    build: .
+    command: "/run_jupyter.sh /skcc"
+    ports:
+      - "8888:8888"
+    volumes:
+      - .:/skcc
+    working_dir: "/skcc"
 
