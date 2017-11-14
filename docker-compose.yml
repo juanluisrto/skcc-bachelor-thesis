@@ -2,7 +2,7 @@ version: '3'
 services:
   notebook:
     build: .
-    command: "/run_jupyter.sh /skcc"
+    command: "/run_jupyter.sh /skcc --allow-root"
     ports:
       - "8888:8888"
     volumes:
