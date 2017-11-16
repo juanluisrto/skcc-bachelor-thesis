@@ -1,7 +1,11 @@
-FROM tensorflow/tensorflow:nightly-py3
+FROM tensorflow/tensorflow:1.4.0-py3
 
 ENV KERAS_BACKEND "tensorflow"
+ENV LC_ALL=C.UTF-8
+ENV LANG=C.UTF-8
 
-RUN pip3 install keras pillow ipywidgets
+COPY Pipfile ./
+COPY Pipfile.lock ./
+
+RUN pip install "pipenv==8.3.2" && pipenv install --system
 RUN jupyter nbextension enable --py widgetsnbextension
-RUN pip3 install h5py
