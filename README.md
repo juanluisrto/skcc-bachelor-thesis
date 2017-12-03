@@ -18,3 +18,12 @@ In the Jupyter interface there are two notebooks:
 ### Jupyter - basic usage
 
 Each code block is executed by marking it and pressing SHIFT + ENTER
+
+## Work flow
+
+This project adheres to the git flow principles of working, where all work is performed in feature branches which are merged to the master branch.
+Before a branch is merged to master, it has to be reviewed approved in a pull request on bitbucket.
+
+The naming convention for feature branches is **feature/<feature_name>**.
+
+To keep the diff in the jupyter notebook file as small as possible please clear the output of all cells before submitting a pull reqeust. In the top menu click **Cell > All Output > Clear**
