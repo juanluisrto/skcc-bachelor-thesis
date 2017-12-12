@@ -1,5 +1,12 @@
 apply plugin: 'com.android.application'
 
+
+repositories {
+    maven {
+        url 'https://google.bintray.com/tensorflow'
+    }
+}
+
 android {
     compileSdkVersion 26
 
@@ -18,6 +25,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+
+    aaptOptions {
+        noCompress "tflite"
+    }
+
 }
 
 ext {
@@ -29,6 +42,8 @@ dependencies {
     implementation "com.android.support:design:$supportLibVersion"
     implementation "com.android.support:appcompat-v7:$supportLibVersion"
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    compile 'org.tensorflow:tensorflow-lite:+'
 
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'

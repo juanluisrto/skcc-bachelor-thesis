@@ -8,6 +8,7 @@ import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
+import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,14 +18,25 @@ import co.ceryle.fitgridview.FitGridView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int REQUEST_TAKE_PHOTO = 1;
+    private static final String TAG = MainActivity.class.getSimpleName();
+    static final int REQUEST_TAKE_PHOTO = 1;
+
+    //Create model class
+    public SkccModel model;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        FitGridView gridView = (FitGridView) findViewById(R.id.gridView);
-        gridView.setFitGridAdapter(new Adapter(this));
+
+        try {
+            model = new SkccModel(this);
+            FitGridView gridView = (FitGridView) findViewById(R.id.gridView);
+            gridView.setFitGridAdapter(new Adapter(this, model));
+        } catch (IOException e) {
+            Log.w(TAG, e);
+        }
     }
 
 
@@ -43,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             // Continue only if the File was successfully created
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.slagkryssaren.skcc",
+                        "com.example.android.fileprovider",
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
@@ -63,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         );
 
         // Save a file: path for use with ACTION_VIEW intents
-        String currentPhotoPath = image.getAbsolutePath();
+        image.getAbsolutePath();
         return image;
     }
 
