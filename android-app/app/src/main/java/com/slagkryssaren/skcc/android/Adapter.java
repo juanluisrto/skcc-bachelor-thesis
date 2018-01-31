@@ -5,9 +5,10 @@ package com.slagkryssaren.skcc.android;
  */
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import co.ceryle.fitgridview.FitGridAdapter;
 
@@ -18,22 +19,25 @@ class Adapter extends FitGridAdapter {
             R.drawable.img_5, R.drawable.img_6, R.drawable.img_7, R.drawable.img_8,
             R.drawable.img_9, R.drawable.img_10, R.drawable.img_11, R.drawable.img_12};
 
-    private Context context;
+    private SkccModel model;
 
-    Adapter(Context context) {
+    Adapter(Context context, SkccModel model) {
         super(context, R.layout.grid_item_iv);
-        this.context = context;
+        this.model = model;
     }
 
     @Override
-    public void onBindView(final int position, View itemView) {
-        ImageView iv = (ImageView) itemView.findViewById(R.id.grid_item_iv);
-        iv.setImageResource(drawables[position]);
+    public void onBindView(final int position, final View itemView) {
+        final ImageView imageView = (ImageView) itemView.findViewById(R.id.grid_item_iv);
+        imageView.setImageResource(drawables[position]);
 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "Position: " + position, Toast.LENGTH_SHORT).show();
+                Bitmap input = BitmapFactory.decodeResource(view.getContext().getResources(), drawables[position]);
+                input = Bitmap.createScaledBitmap(input, SkccModel.DIM_IMG_SIZE_IN_X, SkccModel.DIM_IMG_SIZE_IN_Y, false);
+                Bitmap output = model.predictImage(input);
+                imageView.setImageBitmap(output);
             }
         });
     }
