@@ -23,7 +23,7 @@ public class TfMobileModel extends Model {
     private String inputName = "conv2d_1_input";
     private String outputName = "conv2d_9/Sigmoid";
     private float[] inputFloatValues = new float[DIM_IMG_SIZE_IN_X * DIM_IMG_SIZE_IN_Y];
-    private float[] outputFloatValues = new float[DIM_IMG_SIZE_IN_X * DIM_IMG_SIZE_IN_Y];
+    private float[] outputFloatValues = new float[DIM_IMG_SIZE_OUT_X * DIM_IMG_SIZE_OUT_Y];
 
     public TfMobileModel(Activity activity) throws IOException {
 
@@ -45,10 +45,10 @@ public class TfMobileModel extends Model {
 
     //Reshapes inputData from float [] to float [][][][]
     public float[][][][] reshapeFloat1to4Dimensions(float[] inputData) {
-        float[][][][] reshapedData = new float[1][DIM_IMG_SIZE_IN_X][DIM_IMG_SIZE_IN_Y][1];
-        for (int i = 0; i < DIM_IMG_SIZE_IN_X; ++i) {
-            for (int j = 0; j < DIM_IMG_SIZE_IN_Y; ++j) {
-                reshapedData[0][i][j][0] = inputData[j * DIM_IMG_SIZE_IN_Y + i];
+        float[][][][] reshapedData = new float[1][DIM_IMG_SIZE_OUT_X][DIM_IMG_SIZE_OUT_Y][1];
+        for (int i = 0; i < DIM_IMG_SIZE_OUT_X; i++) {
+            for (int j = 0; j < DIM_IMG_SIZE_OUT_Y; j++) {
+                reshapedData[0][i][j][0] = inputData[j * DIM_IMG_SIZE_OUT_Y + i];
             }
         }
         return reshapedData;

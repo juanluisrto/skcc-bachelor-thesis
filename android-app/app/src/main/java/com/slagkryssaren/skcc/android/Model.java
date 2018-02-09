@@ -25,8 +25,8 @@ public abstract class Model {
     public static final int DIM_IMG_SIZE_IN_X = 160;
     public static final int DIM_IMG_SIZE_IN_Y = 160;
 
-    private static final int DIM_IMG_SIZE_OUT_X = DIM_IMG_SIZE_IN_X / 2;
-    private static final int DIM_IMG_SIZE_OUT_Y = DIM_IMG_SIZE_IN_Y / 2;
+    public static final int DIM_IMG_SIZE_OUT_X = DIM_IMG_SIZE_IN_X / 2;
+    public static final int DIM_IMG_SIZE_OUT_Y = DIM_IMG_SIZE_IN_Y / 2;
 
     private int[] intValues = new int[DIM_IMG_SIZE_IN_X * DIM_IMG_SIZE_IN_Y];
 
