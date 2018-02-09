@@ -11,7 +11,7 @@ import android.widget.Toast;
  * Created by juanl on 02/02/2018.
  */
 
-public class ImageTransform {
+public abstract class Model {
 
     /**
      * Tag for the {@link Log}.
@@ -31,7 +31,7 @@ public class ImageTransform {
     private int[] intValues = new int[DIM_IMG_SIZE_IN_X * DIM_IMG_SIZE_IN_Y];
 
 
-    private Context context;
+    public Context context;
     protected float[][][][] imgData = new float[DIM_BATCH_SIZE][DIM_IMG_SIZE_IN_X][DIM_IMG_SIZE_IN_Y][DIM_PIXEL_SIZE];
     protected float[][][][] outputData = new float[DIM_BATCH_SIZE][DIM_IMG_SIZE_OUT_X][DIM_IMG_SIZE_OUT_Y][DIM_PIXEL_SIZE];
 
@@ -99,7 +99,7 @@ public class ImageTransform {
         return bitmap;
     }
 
-
+    public abstract Bitmap predictImage(Bitmap bitmap);
 
 
 }

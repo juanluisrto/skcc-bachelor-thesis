@@ -19,11 +19,10 @@ class Adapter extends FitGridAdapter {
             R.drawable.img_5, R.drawable.img_6, R.drawable.img_7, R.drawable.img_8,
             R.drawable.img_9, R.drawable.img_10, R.drawable.img_11, R.drawable.img_12};
 
-    private SkccModel model;
+    public Model model;
 
-    Adapter(Context context, SkccModel model) {
+    Adapter(Context context) {
         super(context, R.layout.grid_item_iv);
-        this.model = model;
     }
 
     @Override
@@ -35,10 +34,11 @@ class Adapter extends FitGridAdapter {
             @Override
             public void onClick(View view) {
                 Bitmap input = BitmapFactory.decodeResource(view.getContext().getResources(), drawables[position]);
-                input = Bitmap.createScaledBitmap(input, SkccModel.DIM_IMG_SIZE_IN_X, SkccModel.DIM_IMG_SIZE_IN_Y, false);
+                input = Bitmap.createScaledBitmap(input, Model.DIM_IMG_SIZE_IN_X, Model.DIM_IMG_SIZE_IN_Y, false);
                 Bitmap output = model.predictImage(input);
                 imageView.setImageBitmap(output);
             }
         });
     }
+
 }
