@@ -1,6 +1,7 @@
 package com.slagkryssaren.skcc.android;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -13,11 +14,16 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 
+import com.google.gson.Gson;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import co.ceryle.fitgridview.FitGridView;
+import lecho.lib.hellocharts.model.PointValue;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,16 +31,20 @@ public class MainActivity extends AppCompatActivity {
     static final int REQUEST_TAKE_PHOTO = 1;
     ToggleButton toggle;
 
-    //Create model class
+    //Create model classes
     public TfLiteModel tfLiteModel;
     public TfMobileModel tfMobileModel;
     public Adapter adapter;
     public FitGridView gridView;
 
+    SharedPreferences  mPrefs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mPrefs = getSharedPreferences("chart",MODE_PRIVATE);
+
 
         try {
             tfLiteModel = new TfLiteModel(this);
@@ -104,6 +114,23 @@ public class MainActivity extends AppCompatActivity {
         // Save a file: path for use with ACTION_VIEW intents
         image.getAbsolutePath();
         return image;
+    }
+
+    public void runStatsActivity(View v){
+        Intent intent = new Intent(this,StatsActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+
+
+
+        SharedPreferences.Editor prefsEditor = mPrefs.edit();
+        Gson gson = new Gson();
+        String jsonTfLiteValues = gson.toJson(tfLiteModel.values);
+        String jsonTfMobileValues = gson.toJson(tfMobileModel.values);
+        prefsEditor.putString("tflite", jsonTfLiteValues);
+        prefsEditor.putString("tfMobile", jsonTfMobileValues);
+        prefsEditor.commit();
+        startActivity(intent);
+
     }
 
 }

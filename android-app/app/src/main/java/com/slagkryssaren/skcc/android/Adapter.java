@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import co.ceryle.fitgridview.FitGridAdapter;
+import lecho.lib.hellocharts.model.PointValue;
 
 class Adapter extends FitGridAdapter {
 
@@ -35,7 +36,7 @@ class Adapter extends FitGridAdapter {
             public void onClick(View view) {
                 Bitmap input = BitmapFactory.decodeResource(view.getContext().getResources(), drawables[position]);
                 input = Bitmap.createScaledBitmap(input, Model.DIM_IMG_SIZE_IN_X, Model.DIM_IMG_SIZE_IN_Y, false);
-                Bitmap output = model.predictImage(input);
+                Bitmap output = model.predictImage(input,position);
                 imageView.setImageBitmap(output);
             }
         });

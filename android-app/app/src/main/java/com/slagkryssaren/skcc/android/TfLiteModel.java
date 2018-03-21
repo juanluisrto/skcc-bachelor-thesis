@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
+import lecho.lib.hellocharts.model.PointValue;
+
 /**
  * Created by juanl on 12/12/2017.
  */
@@ -43,12 +45,14 @@ public class TfLiteModel extends Model {
 
 
     @Override
-    public Bitmap predictImage(Bitmap bitmap) {
+    public Bitmap predictImage(Bitmap bitmap, int position) {
         if (tflite == null) {
             Log.e(TAG, "The model has not been initialized; Skipped.");
             return null;
         }
         convertBitmapToFloatArray(bitmap);
+        float [] inputTest  = reshapeFloat4to1Dimensions(imgData);
+        float [] outputTest = new float [DIM_IMG_SIZE_OUT_X * DIM_IMG_SIZE_OUT_Y];
 
         long startTime = SystemClock.uptimeMillis();
         tflite.run(imgData, outputData);
@@ -58,6 +62,9 @@ public class TfLiteModel extends Model {
         String textToShow = Long.toString(endTime - startTime) + "ms";
         Toast.makeText(context, textToShow, Toast.LENGTH_SHORT).show();
 
+        //outputData = reshapeFloat1to4Dimensions(outputTest);
+        long milliseconds = endTime - startTime;
+        values.add(new PointValue((float) position, (float) milliseconds));
         Bitmap outputImage = convertFloatArrayToBitmap(outputData);
 
         return outputImage;

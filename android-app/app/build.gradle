@@ -49,10 +49,14 @@ dependencies {
     implementation "com.android.support:appcompat-v7:$supportLibVersion"
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3' //statistics library for Android
+    //implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3' //statistics library for Android
 
     compile 'org.tensorflow:tensorflow-lite:+'    //tf lite
     compile 'org.tensorflow:tensorflow-android:+' //tf mobile
+
+    compile 'com.github.lecho:hellocharts-library:1.5.8@aar' //statistics library (much nicer)
+    compile 'com.google.code.gson:gson:2.7' //any object to Json
+
 
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'

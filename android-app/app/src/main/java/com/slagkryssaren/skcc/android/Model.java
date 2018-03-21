@@ -1,11 +1,19 @@
 package com.slagkryssaren.skcc.android;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.SystemClock;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import lecho.lib.hellocharts.model.LineChartData;
+import lecho.lib.hellocharts.model.PointValue;
 
 /**
  * Created by juanl on 02/02/2018.
@@ -34,6 +42,12 @@ public abstract class Model {
     public Context context;
     protected float[][][][] imgData = new float[DIM_BATCH_SIZE][DIM_IMG_SIZE_IN_X][DIM_IMG_SIZE_IN_Y][DIM_PIXEL_SIZE];
     protected float[][][][] outputData = new float[DIM_BATCH_SIZE][DIM_IMG_SIZE_OUT_X][DIM_IMG_SIZE_OUT_Y][DIM_PIXEL_SIZE];
+
+    //SharedPreferences sharedPref = this.context.getSharedPreferences(Context.MODE_PRIVATE);
+
+    public List<PointValue> values = new ArrayList<PointValue>();
+
+
 
 
     /**
@@ -98,8 +112,35 @@ public abstract class Model {
         bitmap.setPixels(intPixels, 0, DIM_IMG_SIZE_OUT_X, 0, 0, DIM_IMG_SIZE_OUT_X, DIM_IMG_SIZE_OUT_Y);
         return bitmap;
     }
+    //Reshapes inputData to float array which can be handled by infInterface.feed()
+    public float[] reshapeFloat4to1Dimensions(float[][][][] inputData) {
+        float[] reshapedData = new float[DIM_IMG_SIZE_IN_Y * DIM_IMG_SIZE_IN_X];
+        for (int i = 0; i < DIM_IMG_SIZE_IN_X; ++i) {
+            for (int j = 0; j < DIM_IMG_SIZE_IN_Y; ++j) {
+                reshapedData[j * DIM_IMG_SIZE_IN_Y + i] = inputData[0][i][j][0];
+            }
+        }
+        return reshapedData;
+    }
 
-    public abstract Bitmap predictImage(Bitmap bitmap);
+    //Reshapes inputData from float [] to float [][][][]
+    public float[][][][] reshapeFloat1to4Dimensions(float[] inputData) {
+        float[][][][] reshapedData = new float[1][DIM_IMG_SIZE_OUT_X][DIM_IMG_SIZE_OUT_Y][1];
+        for (int i = 0; i < DIM_IMG_SIZE_OUT_X; i++) {
+            for (int j = 0; j < DIM_IMG_SIZE_OUT_Y; j++) {
+                reshapedData[0][i][j][0] = inputData[j * DIM_IMG_SIZE_OUT_Y + i];
+            }
+        }
+        return reshapedData;
+    }
+
+
+
+    public Bitmap predictImage(Bitmap bitmap){
+        return predictImage(bitmap,-1);
+    }
+
+    public abstract Bitmap predictImage(Bitmap bitmap, int position);
 
 
 }

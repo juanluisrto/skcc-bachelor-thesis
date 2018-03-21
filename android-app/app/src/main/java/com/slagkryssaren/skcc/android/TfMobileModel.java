@@ -11,6 +11,8 @@ import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
 
 import java.io.IOException;
 
+import lecho.lib.hellocharts.model.PointValue;
+
 /**
  * Created by juanl on 02/02/2018.
  */
@@ -25,6 +27,7 @@ public class TfMobileModel extends Model {
     private float[] inputFloatValues = new float[DIM_IMG_SIZE_IN_X * DIM_IMG_SIZE_IN_Y];
     private float[] outputFloatValues = new float[DIM_IMG_SIZE_OUT_X * DIM_IMG_SIZE_OUT_Y];
 
+
     public TfMobileModel(Activity activity) throws IOException {
 
         context = activity.getApplicationContext();
@@ -32,30 +35,10 @@ public class TfMobileModel extends Model {
 
     }
 
-    //Reshapes inputData to float array which can be handled by infInterface.feed()
-    public float[] reshapeFloat4to1Dimensions(float[][][][] inputData) {
-        float[] reshapedData = new float[DIM_IMG_SIZE_IN_Y * DIM_IMG_SIZE_IN_X];
-        for (int i = 0; i < DIM_IMG_SIZE_IN_X; ++i) {
-            for (int j = 0; j < DIM_IMG_SIZE_IN_Y; ++j) {
-                reshapedData[j * DIM_IMG_SIZE_IN_Y + i] = inputData[0][i][j][0];
-            }
-        }
-        return reshapedData;
-    }
 
-    //Reshapes inputData from float [] to float [][][][]
-    public float[][][][] reshapeFloat1to4Dimensions(float[] inputData) {
-        float[][][][] reshapedData = new float[1][DIM_IMG_SIZE_OUT_X][DIM_IMG_SIZE_OUT_Y][1];
-        for (int i = 0; i < DIM_IMG_SIZE_OUT_X; i++) {
-            for (int j = 0; j < DIM_IMG_SIZE_OUT_Y; j++) {
-                reshapedData[0][i][j][0] = inputData[j * DIM_IMG_SIZE_OUT_Y + i];
-            }
-        }
-        return reshapedData;
-    }
 
     @Override
-    public Bitmap predictImage(Bitmap bitmap) {
+    public Bitmap predictImage(Bitmap bitmap, int position) {
         if (infInterface == null) {
             Log.e(TAG, "The model has not been initialized; Skipped.");
             return null;
@@ -70,7 +53,8 @@ public class TfMobileModel extends Model {
         long endTime = SystemClock.uptimeMillis();
 
         outputData = reshapeFloat1to4Dimensions(outputFloatValues);
-
+        long milliseconds = endTime - startTime;
+        values.add(new PointValue((float) position, (float) milliseconds));
         Log.d(TAG, "Timecost to run model inference: " + Long.toString(endTime - startTime));
         String textToShow = Long.toString(endTime - startTime) + "ms";
         Toast.makeText(context, textToShow, Toast.LENGTH_SHORT).show();
