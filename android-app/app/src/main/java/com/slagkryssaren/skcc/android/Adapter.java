@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.ImageView;
 
 import co.ceryle.fitgridview.FitGridAdapter;
-import lecho.lib.hellocharts.model.PointValue;
 
 class Adapter extends FitGridAdapter {
 

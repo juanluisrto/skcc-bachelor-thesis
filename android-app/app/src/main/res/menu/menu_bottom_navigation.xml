@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/camera"
+        android:icon="@android:drawable/ic_menu_camera"
+        android:title="Camera"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/rebind_"
+        android:icon="@android:drawable/stat_notify_sync"
+        android:title="Rebind"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/switch_model"
+        android:enabled="true"
+        android:icon="@drawable/ic_swap_horiz_black_24dp"
+        android:textSize="15sp"
+        android:title="tflite"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/stats"
+        android:icon="@drawable/ic_assessment_black_24dp"
+        android:title="stats"
+        app:showAsAction="always" />
+</menu>
+
+    <!--android:icon="@android:drawable/ic_menu_crop"-->

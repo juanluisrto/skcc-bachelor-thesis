@@ -6,36 +6,34 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 
 import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import co.ceryle.fitgridview.FitGridView;
-import lecho.lib.hellocharts.model.PointValue;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     static final int REQUEST_TAKE_PHOTO = 1;
-    ToggleButton toggle;
 
     //Create model classes
     public TfLiteModel tfLiteModel;
     public TfMobileModel tfMobileModel;
     public Adapter adapter;
     public FitGridView gridView;
+    private BottomNavigationView mBottomView;
 
     SharedPreferences  mPrefs;
 
@@ -44,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mPrefs = getSharedPreferences("chart",MODE_PRIVATE);
+        initializeBottomView();
 
 
         try {
@@ -57,19 +56,59 @@ public class MainActivity extends AppCompatActivity {
             Log.w(TAG, e);
         }
 
-        toggle = (ToggleButton) findViewById(R.id.toggleButton);
-        toggle.setChecked(false);
-        toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    // The toggle is enabled
-                    adapter.model = tfLiteModel;
-                } else {
-                    // The toggle is disabled
-                    adapter.model = tfMobileModel;
+    }
+
+    private void initializeBottomView() {
+        mBottomView = findViewById(R.id.bottom_navigation);
+
+        mBottomView.getMenu().findItem(R.id.rebind_).setOnMenuItemClickListener(
+                new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        rebindGridView(null);
+                        return false;
+                    }
                 }
-            }
-        });
+        );
+        mBottomView.getMenu().findItem(R.id.switch_model).setOnMenuItemClickListener(
+                new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        toggleModel();
+                        return false;
+                    }
+                }
+        );
+        mBottomView.getMenu().findItem(R.id.stats).setOnMenuItemClickListener(
+                new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        runStatsActivity(null);
+                        return false;
+                    }
+                }
+        );
+        mBottomView.getMenu().findItem(R.id.camera).setOnMenuItemClickListener(
+                new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+
+                        return false;
+                    }
+                }
+        );
+    }
+
+    public void toggleModel(){
+        if (adapter.model == tfLiteModel){
+            adapter.model = tfMobileModel;
+            mBottomView.getMenu().findItem(R.id.switch_model).setTitle("TfMobile").setIcon(R.drawable.ic_swap_vert_black_24dp);
+        }
+        else{
+            adapter.model = tfLiteModel;
+            mBottomView.getMenu().findItem(R.id.switch_model).setTitle("Tflite").setIcon(R.drawable.ic_swap_horiz_black_24dp);
+
+        }
     }
 
     public void rebindGridView(View v) {
