@@ -24,7 +24,7 @@ public abstract class Model {
     /**
      * Tag for the {@link Log}.
      */
-    protected static final String TAG = "Skcc_model:";
+
 
     private static final int DIM_BATCH_SIZE = 1;
 
@@ -89,7 +89,7 @@ public abstract class Model {
         }
 
         long endTime = SystemClock.uptimeMillis();
-        Log.d(TAG, "Timecost to convert bitmap to float array: " + Long.toString(endTime - startTime));
+        Log.d("Image", "Timecost to convert bitmap to float array: " + Long.toString(endTime - startTime));
     }
 
     /**

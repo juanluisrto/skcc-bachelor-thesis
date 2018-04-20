@@ -55,6 +55,8 @@ dependencies {
 
     compile 'com.github.lecho:hellocharts-library:1.5.8@aar' //statistics library (much nicer)
     compile 'com.google.code.gson:gson:2.7' //any object to Json
+    compile 'com.felipecsl.asymmetricgridview:library:2.0.1'
+
 
 
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {

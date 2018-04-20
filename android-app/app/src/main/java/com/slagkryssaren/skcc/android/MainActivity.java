@@ -13,16 +13,23 @@ import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ToggleButton;
+import android.widget.AdapterView;
+import android.widget.GridView;
+import android.widget.ListAdapter;
+import android.widget.Toast;
 
+import com.felipecsl.asymmetricgridview.library.model.AsymmetricItem;
+import com.felipecsl.asymmetricgridview.library.widget.AsymmetricGridView;
+import com.felipecsl.asymmetricgridview.library.widget.AsymmetricGridViewAdapter;
 import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import co.ceryle.fitgridview.FitGridView;
-
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -32,9 +39,8 @@ public class MainActivity extends AppCompatActivity {
     public TfLiteModel tfLiteModel;
     public TfMobileModel tfMobileModel;
     public Adapter adapter;
-    public FitGridView gridView;
-    private BottomNavigationView mBottomView;
-
+    public GridView gridview;
+    public BottomNavigationView mBottomView;
     SharedPreferences  mPrefs;
 
     @Override
@@ -44,14 +50,21 @@ public class MainActivity extends AppCompatActivity {
         mPrefs = getSharedPreferences("chart",MODE_PRIVATE);
         initializeBottomView();
 
+        gridview = (GridView) findViewById(R.id.gridview);
+        gridview.setAdapter(new Adapter(this));
+
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+                Toast.makeText(MainActivity.this, "" + position,
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
 
         try {
             tfLiteModel = new TfLiteModel(this);
             tfMobileModel = new TfMobileModel(this);
-            gridView = (FitGridView) findViewById(R.id.gridView);
-            adapter = new Adapter(this);
-            adapter.model = tfMobileModel;
-            gridView.setFitGridAdapter(adapter);
+            adapter.model = tfLiteModel;
         } catch (IOException e) {
             Log.w(TAG, e);
         }
@@ -112,8 +125,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void rebindGridView(View v) {
-        gridView.setFitGridAdapter(adapter);
-        gridView.update();
+       /* grid.setFitGridAdapter(adapter);
+        grid.update();*/
     }
 
     //Makes the intent which calls the camera to make the photo.

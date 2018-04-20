@@ -29,7 +29,8 @@ public class TfLiteModel extends Model {
     /**
      * Name of the model file stored in Assets.
      */
-    private static final String MODEL_PATH = "skccmodel_old.tflite";
+    protected static final String TAG = "Tflite:";
+    private static final String MODEL_PATH = "skccmodel.tflite";
     public static final int FLOAT_BYTES = (Float.SIZE / Byte.SIZE);
     /**
      * An instance of the driver class to run model inference with Tensorflow Lite.

@@ -26,6 +26,7 @@ public class TfMobileModel extends Model {
     private String outputName = "conv2d_9/Sigmoid";
     private float[] inputFloatValues = new float[DIM_IMG_SIZE_IN_X * DIM_IMG_SIZE_IN_Y];
     private float[] outputFloatValues = new float[DIM_IMG_SIZE_OUT_X * DIM_IMG_SIZE_OUT_Y];
+    protected static final String TAG = "TfMobile:";
 
 
     public TfMobileModel(Activity activity) throws IOException {
