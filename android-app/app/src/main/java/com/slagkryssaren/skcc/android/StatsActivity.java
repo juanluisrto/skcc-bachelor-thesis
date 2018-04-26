@@ -26,7 +26,7 @@ import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.view.Chart;
 import lecho.lib.hellocharts.view.LineChartView;
 
-public class StatsActivity extends AppCompatActivity {
+public class StatsActivity extends BaseActivity {
 
     //SharedPreferences stats;
     SharedPreferences  mPrefs;
@@ -38,14 +38,20 @@ public class StatsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_stats);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
         mPrefs = getSharedPreferences("chart",MODE_PRIVATE);
         chart = (LineChartView) findViewById(R.id.chart);//new LineChartView(getApplicationContext());
         chart.setInteractive(true);
         chart.setZoomType(ZoomType.HORIZONTAL_AND_VERTICAL);
+    }
+
+    @Override
+    int getContentViewId() {
+        return R.layout.activity_stats;
+    }
+
+    @Override
+    int getNavigationMenuItemId() {
+        return R.id.stats;
     }
 
     @Override

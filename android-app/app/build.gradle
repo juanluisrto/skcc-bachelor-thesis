@@ -23,6 +23,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
@@ -37,6 +38,11 @@ android {
         noCompress "tflite"
     }
 
+
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
 }
 
 ext {
@@ -50,15 +56,16 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 
 
-    compile 'org.tensorflow:tensorflow-lite:+'    //tf lite
-    compile 'org.tensorflow:tensorflow-android:+' //tf mobile
+    implementation 'org.tensorflow:tensorflow-android:+' //tf mobile
+    implementation 'org.tensorflow:tensorflow-lite:+' //tf lite
 
-    compile 'com.github.lecho:hellocharts-library:1.5.8@aar' //statistics library (much nicer)
-    compile 'com.google.code.gson:gson:2.7' //any object to Json
-    compile 'com.felipecsl.asymmetricgridview:library:2.0.1'
+    implementation 'com.github.lecho:hellocharts-library:1.5.8@aar' //statistics library (much nicer)
+    implementation 'com.google.code.gson:gson:2.7' //any object to Json
+    //compile 'com.felipecsl.asymmetricgridview:library:2.0.1'
 
 
-
+    implementation 'com.android.support:support-v4:26.1.0'
+    implementation 'com.android.support:support-vector-drawable:26.1.0'
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
