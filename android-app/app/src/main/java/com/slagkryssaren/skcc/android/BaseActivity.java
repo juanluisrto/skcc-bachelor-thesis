@@ -24,29 +24,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
 
     }
 
-    /*BottomNavigationView.OnNavigationItemSelectedListener returnListener (){
-        return new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Log.e("inside","inside");
-                navigationView.postDelayed(() -> {
-                    int itemId = item.getItemId();
-                    if (itemId == R.id.stats) {
-                        startActivity(new Intent(self, StatsActivity.class));
-                    } else if (itemId == R.id.pics) {
-                        startActivity(new Intent(self, MainActivity.class));
-                    } else if (itemId == R.id.settings) {
-                        startActivity(new Intent(self, SettingsActivity.class));
-                    }
-                    finish();
-                }, 300);
-                return true;
-            }
-        };
-
-        }*/
-
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -62,15 +39,15 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Log.e("inside","finally");
+        //Log.e("inside","finally");
         navigationView.postDelayed(() -> {
             int itemId = item.getItemId();
             if (itemId == R.id.stats) {
-                startActivity(new Intent(this, StatsActivity.class));
+                startActivity(new Intent(this, StatsActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
             } else if (itemId == R.id.pics) {
-                startActivity(new Intent(this, MainActivity.class));
+                startActivity(new Intent(this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
             } else if (itemId == R.id.settings) {
-                startActivity(new Intent(this, SettingsActivity.class));
+                startActivity(new Intent(this, SettingsActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
             }
             finish();
         }, 300);

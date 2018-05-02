@@ -57,7 +57,7 @@ dependencies {
 
 
     implementation 'org.tensorflow:tensorflow-android:+' //tf mobile
-    implementation 'org.tensorflow:tensorflow-lite:+' //tf lite
+    implementation 'org.tensorflow:tensorflow-lite:+' //tf lite :+@aar
 
     implementation 'com.github.lecho:hellocharts-library:1.5.8@aar' //statistics library (much nicer)
     implementation 'com.google.code.gson:gson:2.7' //any object to Json

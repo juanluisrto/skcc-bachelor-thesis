@@ -1,4 +1,4 @@
-package com.slagkryssaren.skcc.android;
+package com.slagkryssaren.skcc.android.models;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
 import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.slagkryssaren.skcc.android.models.Model;
 
 import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
 
@@ -19,7 +21,6 @@ import lecho.lib.hellocharts.model.PointValue;
 
 public class TfMobileModel extends Model {
 
-    private Context context;
     private TensorFlowInferenceInterface infInterface;
     private static final String MODEL_PATH = "skcc_model.pb";
     private String inputName = "conv2d_1_input";
@@ -29,10 +30,10 @@ public class TfMobileModel extends Model {
     protected static final String TAG = "TfMobile:";
 
 
-    public TfMobileModel(Activity activity) throws IOException {
+    public TfMobileModel(Context context) throws IOException {
 
-        context = activity.getApplicationContext();
-        infInterface = new TensorFlowInferenceInterface(activity.getAssets(), MODEL_PATH);
+        this.context = context;
+        infInterface = new TensorFlowInferenceInterface(context.getAssets(), MODEL_PATH);
 
     }
 

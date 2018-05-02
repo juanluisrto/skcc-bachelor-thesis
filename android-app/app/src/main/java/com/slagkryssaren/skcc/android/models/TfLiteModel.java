@@ -1,4 +1,4 @@
-package com.slagkryssaren.skcc.android;
+package com.slagkryssaren.skcc.android.models;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,10 +8,15 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.slagkryssaren.skcc.android.models.Model;
+
 import org.tensorflow.lite.Interpreter;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
@@ -30,18 +35,20 @@ public class TfLiteModel extends Model {
      * Name of the model file stored in Assets.
      */
     protected static final String TAG = "Tflite:";
-    private static final String MODEL_PATH = "skccmodel.tflite";
-    public static final int FLOAT_BYTES = (Float.SIZE / Byte.SIZE);
-    /**
+    private static final String MODEL_PATH = "skccmodel.tflite";/**
      * An instance of the driver class to run model inference with Tensorflow Lite.
      */
     private Interpreter tflite;
 
+    public TfLiteModel(Activity a) throws IOException {
+        this.context = a.getApplicationContext();
+        tflite = new Interpreter(loadModelFile(a));
+        //int idx = tflite.getInputIndex("conv2d_1_input");
+        //        int[] dims = {1,160*160,1};
+        //tflite.resizeInput(idx,dims);
 
-    public TfLiteModel(Activity activity) throws IOException {
-        context = activity.getApplicationContext();
-        tflite = new Interpreter(loadModelFile(activity));
 
+        //resizeInput(int idx, int[] dims) {
     }
 
 
@@ -52,16 +59,19 @@ public class TfLiteModel extends Model {
             return null;
         }
         convertBitmapToFloatArray(bitmap);
-        float [] inputTest  = reshapeFloat4to1Dimensions(imgData);
-        float [] outputTest = new float [DIM_IMG_SIZE_OUT_X * DIM_IMG_SIZE_OUT_Y];
+        //ByteBuffer f = convertBitmapToByteBuffer(bitmap);
+        //f.order(ByteOrder.LITTLE_ENDIAN);
+        //float [] inputTest  = reshapeFloat4to1Dimensions(imgData);
+        //float [] outputTest = new float [DIM_IMG_SIZE_OUT_X * DIM_IMG_SIZE_OUT_Y];
 
         long startTime = SystemClock.uptimeMillis();
         tflite.run(imgData, outputData);
         long endTime = SystemClock.uptimeMillis();
+        Log.d(TAG,String.valueOf(tflite.getLastNativeInferenceDurationNanoseconds()));
 
         Log.d(TAG, "Timecost to run model inference: " + Long.toString(endTime - startTime));
         String textToShow = Long.toString(endTime - startTime) + "ms";
-        Toast.makeText(context, textToShow, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, textToShow, Toast.LENGTH_SHORT).show();
 
         //outputData = reshapeFloat1to4Dimensions(outputTest);
         long milliseconds = endTime - startTime;
@@ -74,8 +84,8 @@ public class TfLiteModel extends Model {
     /**
      * Memory-map the model file in Assets.
      */
-    private MappedByteBuffer loadModelFile(Activity activity) throws IOException {
-        AssetFileDescriptor fileDescriptor = activity.getAssets().openFd(MODEL_PATH);
+    private MappedByteBuffer loadModelFile(Context context) throws IOException {
+        AssetFileDescriptor fileDescriptor = context.getAssets().openFd(MODEL_PATH);
         FileInputStream inputStream = new FileInputStream(fileDescriptor.getFileDescriptor());
         FileChannel fileChannel = inputStream.getChannel();
         long startOffset = fileDescriptor.getStartOffset();

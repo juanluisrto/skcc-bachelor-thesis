@@ -4,18 +4,27 @@ package com.slagkryssaren.skcc.android;
  * Created by juanl on 21/11/2017.
  */
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.slagkryssaren.skcc.android.models.Model;
+import com.slagkryssaren.skcc.android.models.TfLiteModel;
+import com.slagkryssaren.skcc.android.models.TfMobileModel;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 
-class Adapter extends BaseAdapter {
+class Adapter extends BaseAdapter implements AdapterView.OnItemClickListener{
 
     public int[] drawables = {
             R.drawable.img_0,  R.drawable.img_1,  R.drawable.img_2,  R.drawable.img_3,  R.drawable.img_4,  R.drawable.img_5,
@@ -44,13 +53,22 @@ class Adapter extends BaseAdapter {
             R.drawable.img_138,  R.drawable.img_139,  R.drawable.img_140,  R.drawable.img_141,  R.drawable.img_142,  R.drawable.img_143,
             R.drawable.img_144,  R.drawable.img_145,  R.drawable.img_146,  R.drawable.img_147,  R.drawable.img_148,  R.drawable.img_149};
 
-    public Model model;
+    //Create model classes
+    public TfLiteModel tfLiteModel;
+    public TfMobileModel tfMobileModel;
     private Context c;
     private ArrayList<ImageView> imageViews = new ArrayList<>(150);
 
 
-    Adapter(Context context) {
+    Adapter(Context context, Activity a) {
         c = context;
+        try {
+            tfLiteModel = new TfLiteModel(a);
+            tfMobileModel = new TfMobileModel(c);
+        } catch (IOException e) {
+            Log.w("error", e);
+        }
+
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -74,16 +92,8 @@ class Adapter extends BaseAdapter {
         return drawables.length;
     }
 
-    public Object getItem(int position) {
-        ImageView imageView = imageViews.get(position);
-        Bitmap input = BitmapFactory.decodeResource(c.getResources(), drawables[position]);
-        input = Bitmap.createScaledBitmap(input, Model.DIM_IMG_SIZE_IN_X, Model.DIM_IMG_SIZE_IN_Y, false);
-        Bitmap output = model.predictImage(input,position);
-        imageView.setImageBitmap(output);
-        //imageView.setLayoutParams();
-        //imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        imageView.setPadding(8, 8, 8, 8);
+    @Override
+    public Object getItem(int i) {
         return null;
     }
 
@@ -92,4 +102,22 @@ class Adapter extends BaseAdapter {
     }
 
 
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        Bitmap input = BitmapFactory.decodeResource(c.getResources(), drawables[position]);
+        input = Bitmap.createScaledBitmap(input, Model.DIM_IMG_SIZE_IN_X, Model.DIM_IMG_SIZE_IN_Y, false);
+        Bitmap outputTfLite = tfLiteModel.predictImage(input,position);
+        Bitmap outputTfMobile = tfMobileModel.predictImage(input,position);
+
+        c.startActivity(new Intent(c, DisplayActivity.class)
+                .putExtra("outputTfMobile",outputTfMobile)
+                .putExtra("outputTfLite",outputTfLite)
+                .putExtra("timeTflite",String.valueOf(tfLiteModel.values.get(tfLiteModel.values.size()-1).getY()))
+                .putExtra("timeTfmobile",String.valueOf(tfMobileModel.values.get(tfMobileModel.values.size()-1).getY()))
+                .putExtra("originalDrawable",drawables[position])
+                .putExtra("targetDrawable", drawables[position]));
+
+
+
+    }
 }

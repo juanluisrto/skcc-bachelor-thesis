@@ -1,11 +1,10 @@
 package com.slagkryssaren.skcc.android;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.GridView;
-import java.io.IOException;
+import com.slagkryssaren.skcc.android.models.TfLiteModel;
+import com.slagkryssaren.skcc.android.models.TfMobileModel;
+
 public class MainActivity extends BaseActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -21,24 +20,10 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPrefs = getSharedPreferences("chart", MODE_PRIVATE);
-        //navigationView.getMenu().getItem(2).setChecked(true);
         gridview = (GridView) findViewById(R.id.gridview);
-        adapter = new Adapter(this);
+        adapter = new Adapter(this,this);
         gridview.setAdapter(adapter);
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                adapter.getItem(position);
-            }
-
-        });
-
-        try {
-            tfLiteModel = new TfLiteModel(this);
-            tfMobileModel = new TfMobileModel(this);
-            adapter.model = tfLiteModel;
-        } catch (IOException e) {
-            Log.w(TAG, e);
-        }
+        gridview.setOnItemClickListener(adapter);
 
     }
 
