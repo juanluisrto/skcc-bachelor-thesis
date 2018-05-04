@@ -12,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.slagkryssaren.skcc.android.models.TfLiteModel;
+import com.slagkryssaren.skcc.android.models.TfMobileModel;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -60,13 +62,17 @@ public class StatsActivity extends BaseActivity {
         //stats = this.getSharedPreferences("stats",Context.MODE_PRIVATE);
         Gson gson = new Gson();
         Type listType = new TypeToken<ArrayList<PointValue>>(){}.getType();
-        String tfliteJson = mPrefs.getString("tflite", "");
-        String tfMobileJson = mPrefs.getString("tfMobile", "");
+        String tfliteJson = mPrefs.getString(TfLiteModel.class.getName(), "");
+        String tfMobileJson = mPrefs.getString(TfMobileModel.class.getName(), "");
         tfliteValues = gson.fromJson(tfliteJson,listType);
         tfMobileValues = gson.fromJson(tfMobileJson,listType);
 
-        float maxNumberOfPoints = Math.max(tfliteValues.size(),tfMobileValues.size());
-        //float maxTime = Math.max(tfliteValues.)
+        float maxNumberOfPoints = 20;
+        try {
+            maxNumberOfPoints = Math.max(tfliteValues.size(), tfMobileValues.size());
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
 
         Line lineLite = new Line(tfliteValues).setColor(Color.RED).setCubic(false).setHasLines(false);
         Line lineMobile = new Line(tfMobileValues).setColor(Color.BLUE).setCubic(false).setHasLines(false);
@@ -84,8 +90,8 @@ public class StatsActivity extends BaseActivity {
         //data.setBaseValue(0);
         chart.setLineChartData(data);
         final Viewport v = new Viewport(chart.getMaximumViewport());
-        v.bottom = 300;
-        v.top = 1300;
+        //v.bottom = 300;
+        //v.top = 1300;
         chart.setMaximumViewport(v);
 
 

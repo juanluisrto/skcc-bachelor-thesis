@@ -29,9 +29,6 @@ import lecho.lib.hellocharts.model.PointValue;
 public class TfLiteModel extends Model {
 
     /**
-     * Tag for the {@link Log}.
-     */
-    /**
      * Name of the model file stored in Assets.
      */
     protected static final String TAG = "Tflite:";
@@ -39,6 +36,7 @@ public class TfLiteModel extends Model {
      * An instance of the driver class to run model inference with Tensorflow Lite.
      */
     private Interpreter tflite;
+    public boolean neuralAPI = false;
 
     public TfLiteModel(Activity a) throws IOException {
         this.context = a.getApplicationContext();
@@ -46,8 +44,6 @@ public class TfLiteModel extends Model {
         //int idx = tflite.getInputIndex("conv2d_1_input");
         //        int[] dims = {1,160*160,1};
         //tflite.resizeInput(idx,dims);
-
-
         //resizeInput(int idx, int[] dims) {
     }
 
@@ -63,17 +59,14 @@ public class TfLiteModel extends Model {
         //f.order(ByteOrder.LITTLE_ENDIAN);
         //float [] inputTest  = reshapeFloat4to1Dimensions(imgData);
         //float [] outputTest = new float [DIM_IMG_SIZE_OUT_X * DIM_IMG_SIZE_OUT_Y];
-
+        tflite.setUseNNAPI(neuralAPI);
         long startTime = SystemClock.uptimeMillis();
         tflite.run(imgData, outputData);
         long endTime = SystemClock.uptimeMillis();
         Log.d(TAG,String.valueOf(tflite.getLastNativeInferenceDurationNanoseconds()));
 
         Log.d(TAG, "Timecost to run model inference: " + Long.toString(endTime - startTime));
-        String textToShow = Long.toString(endTime - startTime) + "ms";
-        //Toast.makeText(context, textToShow, Toast.LENGTH_SHORT).show();
 
-        //outputData = reshapeFloat1to4Dimensions(outputTest);
         long milliseconds = endTime - startTime;
         values.add(new PointValue((float) position, (float) milliseconds));
         Bitmap outputImage = convertFloatArrayToBitmap(outputData);

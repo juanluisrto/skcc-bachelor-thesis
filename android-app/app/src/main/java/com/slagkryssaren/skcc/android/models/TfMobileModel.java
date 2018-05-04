@@ -30,9 +30,9 @@ public class TfMobileModel extends Model {
     protected static final String TAG = "TfMobile:";
 
 
-    public TfMobileModel(Context context) throws IOException {
+    public TfMobileModel(Activity a) throws IOException {
 
-        this.context = context;
+        this.context = a.getApplicationContext();
         infInterface = new TensorFlowInferenceInterface(context.getAssets(), MODEL_PATH);
 
     }
@@ -47,7 +47,6 @@ public class TfMobileModel extends Model {
         }
         convertBitmapToFloatArray(bitmap);
         inputFloatValues = reshapeFloat4to1Dimensions(imgData);
-
         long startTime = SystemClock.uptimeMillis();
         infInterface.feed(inputName, inputFloatValues, 1, DIM_IMG_SIZE_IN_X, DIM_IMG_SIZE_IN_Y, 1);
         infInterface.run(new String[]{outputName}, true);
@@ -59,7 +58,6 @@ public class TfMobileModel extends Model {
         values.add(new PointValue((float) position, (float) milliseconds));
         Log.d(TAG, "Timecost to run model inference: " + Long.toString(endTime - startTime));
         String textToShow = Long.toString(endTime - startTime) + "ms";
-        Toast.makeText(context, textToShow, Toast.LENGTH_SHORT).show();
 
 
         Bitmap outputImage = convertFloatArrayToBitmap(outputData);

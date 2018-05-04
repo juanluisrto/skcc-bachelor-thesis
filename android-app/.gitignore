@@ -56,3 +56,6 @@ freeline_project_description.json
 old_text-detector.ipynb
 
 *.png
+/**/targets/
+**/images/
+
