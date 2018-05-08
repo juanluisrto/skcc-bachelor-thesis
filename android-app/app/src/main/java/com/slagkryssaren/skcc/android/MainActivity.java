@@ -87,10 +87,6 @@ public class MainActivity extends BaseActivity {
     }
 
     static void exportValuesToExternalStorage() throws IOException {
-
-
-
-
         if (isExternalStorageWritable()){
             File file = getFileInDownloadsDir();
             //file.mkdirs();
@@ -99,7 +95,10 @@ public class MainActivity extends BaseActivity {
             {
                 FileOutputStream fOut = new FileOutputStream(file);
                 OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
-
+                myOutWriter.append("Device:" + android.os.Build.MODEL + "\n");
+                myOutWriter.append("NeuralNetworks API enabled:" + String.valueOf(adapter.tfLiteModel.neuralAPI) + "\n");
+                myOutWriter.append("Input image size: " + String.valueOf(Model.DIM_IMG_SIZE_IN_X)
+                                    + "x" + String.valueOf(Model.DIM_IMG_SIZE_IN_Y) + "\n\n");
                 myOutWriter.append("TfMobile\n");
                 for (PointValue p : adapter.tfMobileModel.values){
                     String data = p.getX() + "  " + p.getY() + "\n";

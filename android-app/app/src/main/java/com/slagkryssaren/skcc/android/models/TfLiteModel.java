@@ -41,10 +41,7 @@ public class TfLiteModel extends Model {
     public TfLiteModel(Activity a) throws IOException {
         this.context = a.getApplicationContext();
         tflite = new Interpreter(loadModelFile(a));
-        //int idx = tflite.getInputIndex("conv2d_1_input");
-        //        int[] dims = {1,160*160,1};
-        //tflite.resizeInput(idx,dims);
-        //resizeInput(int idx, int[] dims) {
+
     }
 
 
@@ -56,9 +53,7 @@ public class TfLiteModel extends Model {
         }
         convertBitmapToFloatArray(bitmap);
         //ByteBuffer f = convertBitmapToByteBuffer(bitmap);
-        //f.order(ByteOrder.LITTLE_ENDIAN);
-        //float [] inputTest  = reshapeFloat4to1Dimensions(imgData);
-        //float [] outputTest = new float [DIM_IMG_SIZE_OUT_X * DIM_IMG_SIZE_OUT_Y];
+
         tflite.setUseNNAPI(neuralAPI);
         long startTime = SystemClock.uptimeMillis();
         tflite.run(imgData, outputData);
@@ -68,7 +63,7 @@ public class TfLiteModel extends Model {
         Log.d(TAG, "Timecost to run model inference: " + Long.toString(endTime - startTime));
 
         long milliseconds = endTime - startTime;
-        values.add(new PointValue((float) position, (float) milliseconds));
+        if (position != -1){ values.add(new PointValue((float) position, (float) milliseconds));}
         Bitmap outputImage = convertFloatArrayToBitmap(outputData);
 
         return outputImage;
@@ -84,6 +79,13 @@ public class TfLiteModel extends Model {
         long startOffset = fileDescriptor.getStartOffset();
         long declaredLength = fileDescriptor.getDeclaredLength();
         return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
+    }
+
+
+    public void adaptDimensions(Bitmap b){
+        super.changeDefaultDimensions(b);
+        int[] dims = {1,b.getWidth(),b.getHeight(),1};
+        tflite.resizeInput(0,dims);
     }
 
     /**

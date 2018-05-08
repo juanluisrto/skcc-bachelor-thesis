@@ -14,6 +14,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
 
     protected BottomNavigationView navigationView;
     protected BottomNavigationView.OnNavigationItemSelectedListener listener;
+    protected int currentActivity = getNavigationMenuItemId();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,14 +43,18 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         //Log.e("inside","finally");
         navigationView.postDelayed(() -> {
             int itemId = item.getItemId();
-            if (itemId == R.id.stats) {
+            if (itemId == R.id.stats && itemId != currentActivity) {
                 startActivity(new Intent(this, StatsActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
-            } else if (itemId == R.id.pics) {
+            } else if (itemId == R.id.pics && itemId != currentActivity) {
                 startActivity(new Intent(this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
-            } else if (itemId == R.id.settings) {
+            } else if (itemId == R.id.settings && itemId != currentActivity) {
                 startActivity(new Intent(this, SettingsActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
+            } else if (itemId == R.id.camera && itemId != currentActivity) {
+                startActivity(new Intent(this, CameraActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
             }
-            finish();
+            if (itemId != currentActivity) {
+                finish();
+            }
         }, 300);
         return true;
     }
@@ -62,6 +67,10 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
     void selectBottomNavigationBarItem(int itemId) {
         MenuItem item = navigationView.getMenu().findItem(itemId);
         item.setChecked(true);
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 
     abstract int getContentViewId();

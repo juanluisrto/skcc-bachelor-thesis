@@ -19,7 +19,7 @@ import java.util.Collections;
 
 public class SettingsActivity extends BaseActivity {
 
-    private int numberOfImages = 30;
+    private int numberOfImages = 10;
     private Context c;
 
     @Override
@@ -33,7 +33,7 @@ public class SettingsActivity extends BaseActivity {
         Button exportButton = findViewById(R.id.exportData);
         Button resetButton = findViewById(R.id.resetData);
         SeekBar seekbar = findViewById(R.id.seekBar);
-        seekbar.setMax(150);
+        seekbar.setMax(50);
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -53,7 +53,7 @@ public class SettingsActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if (checkBoxLite.isChecked() || checkBoxMobile.isChecked()) {
-                    ArrayList<Integer> list = new ArrayList<Integer>(150);
+                    ArrayList<Integer> list = new ArrayList<Integer>(50);
                     for (int i = 0; i < 150; i++) {
                         list.add(new Integer(i));
                     }

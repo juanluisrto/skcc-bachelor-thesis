@@ -37,11 +37,11 @@ public abstract class Model {
     public static final int FLOAT_BYTES = (Float.SIZE / Byte.SIZE);
     private static final int DIM_PIXEL_SIZE = 1;
 
-    public static final int DIM_IMG_SIZE_IN_X = 160;
-    public static final int DIM_IMG_SIZE_IN_Y = 160;
+    public static int DIM_IMG_SIZE_IN_X = 160;
+    public static int DIM_IMG_SIZE_IN_Y = 160;
 
-    public static final int DIM_IMG_SIZE_OUT_X = DIM_IMG_SIZE_IN_X / 2;
-    public static final int DIM_IMG_SIZE_OUT_Y = DIM_IMG_SIZE_IN_Y / 2;
+    public static int DIM_IMG_SIZE_OUT_X = DIM_IMG_SIZE_IN_X / 2;
+    public static int DIM_IMG_SIZE_OUT_Y = DIM_IMG_SIZE_IN_Y / 2;
 
     private int[] intValues = new int[DIM_IMG_SIZE_IN_X * DIM_IMG_SIZE_IN_Y];
 
@@ -83,12 +83,6 @@ public abstract class Model {
             }
         }
 
-       /* //Normalize the image
-        for (int i = 0; i < DIM_IMG_SIZE_IN_X; ++i) {
-            for (int j = 0; j < DIM_IMG_SIZE_IN_Y; ++j) {
-                imgData[0][i][j][0] = map(imgData[0][i][j][0], min, max, 0, 1);
-            }
-        }*/
         return byteBuffer;
     }
 
@@ -185,6 +179,27 @@ public abstract class Model {
         float relativeFromValue = (value - fromMin) / (fromMax - fromMin);
         float mappedValue = map(relativeFromValue, toMin, toMax);
         return mappedValue;
+    }
+
+
+    public void changeDefaultDimensions(Bitmap b){
+        DIM_IMG_SIZE_IN_X = b.getWidth();
+        DIM_IMG_SIZE_IN_Y = b.getHeight();
+        DIM_IMG_SIZE_OUT_X = DIM_IMG_SIZE_IN_X / 2;
+        DIM_IMG_SIZE_OUT_Y = DIM_IMG_SIZE_IN_Y / 2;
+        intValues = new int[DIM_IMG_SIZE_IN_X * DIM_IMG_SIZE_IN_Y];
+        imgData = new float[DIM_BATCH_SIZE][DIM_IMG_SIZE_IN_X][DIM_IMG_SIZE_IN_Y][DIM_PIXEL_SIZE];
+        outputData = new float[DIM_BATCH_SIZE][DIM_IMG_SIZE_OUT_X][DIM_IMG_SIZE_OUT_Y][DIM_PIXEL_SIZE];
+    }
+
+    public void resetDefaultDimensions(){
+        DIM_IMG_SIZE_IN_X = 160;
+        DIM_IMG_SIZE_IN_Y = 160;
+        DIM_IMG_SIZE_OUT_X = DIM_IMG_SIZE_IN_X / 2;
+        DIM_IMG_SIZE_OUT_Y = DIM_IMG_SIZE_IN_Y / 2;
+        intValues = new int[DIM_IMG_SIZE_IN_X * DIM_IMG_SIZE_IN_Y];
+        imgData = new float[DIM_BATCH_SIZE][DIM_IMG_SIZE_IN_X][DIM_IMG_SIZE_IN_Y][DIM_PIXEL_SIZE];
+        outputData = new float[DIM_BATCH_SIZE][DIM_IMG_SIZE_OUT_X][DIM_IMG_SIZE_OUT_Y][DIM_PIXEL_SIZE];
     }
 
 

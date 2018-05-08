@@ -55,7 +55,7 @@ public class TfMobileModel extends Model {
 
         outputData = reshapeFloat1to4Dimensions(outputFloatValues);
         long milliseconds = endTime - startTime;
-        values.add(new PointValue((float) position, (float) milliseconds));
+        if (position != -1){ values.add(new PointValue((float) position, (float) milliseconds));}
         Log.d(TAG, "Timecost to run model inference: " + Long.toString(endTime - startTime));
         String textToShow = Long.toString(endTime - startTime) + "ms";
 
@@ -63,5 +63,12 @@ public class TfMobileModel extends Model {
         Bitmap outputImage = convertFloatArrayToBitmap(outputData);
         return outputImage;
     }
+
+    public void adaptDimensions(Bitmap b){
+        super.changeDefaultDimensions(b);
+    }
+
+
+
 }
 

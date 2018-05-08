@@ -25,6 +25,6 @@
         android:id="@+id/stats"
         android:enabled="true"
         android:icon="@drawable/ic_assessment_black_24dp"
-        android:title="stats"
+        android:title="Stats"
         app:showAsAction="always" />
 </menu>
