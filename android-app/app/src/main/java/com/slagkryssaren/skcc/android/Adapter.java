@@ -50,7 +50,9 @@ public class Adapter extends BaseAdapter implements AdapterView.OnItemClickListe
         if (convertView == null) {
             // if it's not recycled, initialize some attributes
             imageView = new ImageView(c);
-            imageView.setLayoutParams(parent.getLayoutParams());
+            imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            //imageView.setMaxHeight(.getWidth());
+            imageView.setAdjustViewBounds(true);
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             imageView.setPadding(8, 8, 8, 8);
         } else {
@@ -58,6 +60,8 @@ public class Adapter extends BaseAdapter implements AdapterView.OnItemClickListe
         }
 
         imageView.setImageResource(drawables[position]);
+        //imageView.setPaddingRelative(8,8,8,8);
+
         return imageView;
     }
 
@@ -78,9 +82,6 @@ public class Adapter extends BaseAdapter implements AdapterView.OnItemClickListe
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         runInference(position,true,true,true);
-        MainActivity.syncValues(tfMobileModel);
-        MainActivity.syncValues(tfLiteModel);
-
     }
 
     void runInference(int position, boolean tflite, boolean tfmobile, boolean display){

@@ -28,6 +28,8 @@ import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.view.Chart;
 import lecho.lib.hellocharts.view.LineChartView;
 
+import static com.slagkryssaren.skcc.android.MainActivity.adapter;
+
 public class StatsActivity extends BaseActivity {
 
     //SharedPreferences stats;
@@ -59,7 +61,9 @@ public class StatsActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //stats = this.getSharedPreferences("stats",Context.MODE_PRIVATE);
+        MainActivity.syncValues(adapter.tfMobileModel);
+        MainActivity.syncValues(adapter.tfLiteModel);
+
         Gson gson = new Gson();
         Type listType = new TypeToken<ArrayList<PointValue>>(){}.getType();
         String tfliteJson = mPrefs.getString(TfLiteModel.class.getName(), "");
@@ -87,12 +91,13 @@ public class StatsActivity extends BaseActivity {
         data.setAxisYLeft(axisY);
         data.setLines(lines);
 
-        //data.setBaseValue(0);
+        chart.setZoomEnabled(true);
         chart.setLineChartData(data);
         final Viewport v = new Viewport(chart.getMaximumViewport());
-        //v.bottom = 300;
-        //v.top = 1300;
+        v.bottom = Math.min(tfliteValues.get(0).getY(),tfMobileValues.get(0).getY()) - 300;
+        v.top = Math.max(tfliteValues.get(0).getY(),tfMobileValues.get(0).getY()) + 300;
         chart.setMaximumViewport(v);
+
 
 
     }

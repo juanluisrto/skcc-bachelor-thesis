@@ -7,10 +7,12 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.slagkryssaren.skcc.android.models.Model;
 import com.slagkryssaren.skcc.android.models.TfLiteModel;
 
 import java.io.IOException;
@@ -32,6 +34,9 @@ public class SettingsActivity extends BaseActivity {
         Button runButton = findViewById(R.id.runInference);
         Button exportButton = findViewById(R.id.exportData);
         Button resetButton = findViewById(R.id.resetData);
+        ProgressBar spinner = findViewById(R.id.loading);
+        TextView resolution = findViewById(R.id.resolution);
+        resolution.setText(resolution.getText() + String.valueOf(Model.DIM_IMG_SIZE_IN_X) + "x" + String.valueOf(Model.DIM_IMG_SIZE_IN_X));
         SeekBar seekbar = findViewById(R.id.seekBar);
         seekbar.setMax(50);
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -52,15 +57,16 @@ public class SettingsActivity extends BaseActivity {
         runButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                spinner.setVisibility(View.VISIBLE);
                 if (checkBoxLite.isChecked() || checkBoxMobile.isChecked()) {
-                    ArrayList<Integer> list = new ArrayList<Integer>(50);
-                    for (int i = 0; i < 150; i++) {
+                    ArrayList<Integer> list = new ArrayList<Integer>(MainActivity.adapter.drawables.length);
+                    for (int i = 0; i < MainActivity.adapter.drawables.length; i++) {
                         list.add(new Integer(i));
                     }
                     Collections.shuffle(list);
                     for (int i = 0; i < numberOfImages; i++) {
                         MainActivity.adapter.runInference(list.get(i), checkBoxLite.isChecked(), checkBoxMobile.isChecked(), false);
-                        Toast.makeText(c, String.valueOf(numberOfImages - i - 1) + " left", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(c, String.valueOf(numberOfImages - i - 1) + " left", Toast.LENGTH_SHORT).show();
                     }
                     if (checkBoxLite.isChecked()) {
                         MainActivity.syncValues(MainActivity.adapter.tfLiteModel);
@@ -68,6 +74,8 @@ public class SettingsActivity extends BaseActivity {
                     if (checkBoxMobile.isChecked()) {
                         MainActivity.syncValues(MainActivity.adapter.tfMobileModel);
                     }
+                    spinner.setVisibility(View.GONE);
+
                 }
             }
         });
@@ -77,7 +85,7 @@ public class SettingsActivity extends BaseActivity {
             public void onClick(View view) {
                 try {
                     MainActivity.exportValuesToExternalStorage();
-                    Toast.makeText(c,"Data exported succesfully",Toast.LENGTH_LONG).show();
+                    Toast.makeText(c,"Data exported succesfully to Downloads",Toast.LENGTH_LONG).show();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

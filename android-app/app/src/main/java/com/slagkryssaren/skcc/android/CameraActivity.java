@@ -19,6 +19,9 @@ import android.widget.Toast;
 
 import com.slagkryssaren.skcc.android.BaseActivity;
 import com.slagkryssaren.skcc.android.R;
+import com.slagkryssaren.skcc.android.models.Model;
+
+import static com.slagkryssaren.skcc.android.MainActivity.adapter;
 
 public class CameraActivity extends BaseActivity {
 
@@ -40,13 +43,14 @@ public class CameraActivity extends BaseActivity {
     @Override
     public void onPause() {
         super.onPause();
-        MainActivity.adapter.tfLiteModel.resetDefaultDimensions();
-        MainActivity.adapter.tfMobileModel.resetDefaultDimensions();
+        adapter.tfLiteModel.resetDefaultDimensions();
+        adapter.tfMobileModel.resetDefaultDimensions();
     }
 
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
@@ -56,12 +60,14 @@ public class CameraActivity extends BaseActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            MainActivity.adapter.tfLiteModel.adaptDimensions(imageBitmap);
-            MainActivity.adapter.tfMobileModel.adaptDimensions(imageBitmap);
-            Bitmap outputLite = MainActivity.adapter.tfLiteModel.predictImage(imageBitmap);
-            //Bitmap outputMobile = MainActivity.adapter.tfMobileModel.predictImage(imageBitmap);
+            int squareSize = Math.min(160,Math.min(imageBitmap.getWidth(),imageBitmap.getHeight()));
+            imageBitmap = Bitmap.createBitmap(imageBitmap, imageBitmap.getWidth()/2-squareSize/2, imageBitmap.getHeight()/2-squareSize/2, squareSize, squareSize);
+            adapter.tfLiteModel.adaptDimensions(imageBitmap);
+            adapter.tfMobileModel.adaptDimensions(imageBitmap);
+            Bitmap outputLite = adapter.tfLiteModel.predictImage(imageBitmap);
+            Bitmap outputMobile = adapter.tfMobileModel.predictImage(imageBitmap);
             photoTflite.setImageBitmap(outputLite);
-            //photoTfMobile.setImageBitmap(outputMobile);
+            photoTfMobile.setImageBitmap(outputMobile);
         }
     }
 

@@ -71,6 +71,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
 
     @Override
     public void onBackPressed() {
+        if(this.getClass() == DisplayActivity.class){
+            super.onBackPressed();
+        }
     }
 
     abstract int getContentViewId();

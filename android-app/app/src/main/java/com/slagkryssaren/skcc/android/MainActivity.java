@@ -41,6 +41,7 @@ public class MainActivity extends BaseActivity {
         adapter = new Adapter(this);
         gridview.setAdapter(adapter);
         gridview.setOnItemClickListener(adapter);
+        gridview.setVerticalSpacing(gridview.getHorizontalSpacing());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.System.canWrite(this)) {
@@ -49,6 +50,14 @@ public class MainActivity extends BaseActivity {
             }
         }
     }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        MainActivity.syncValues(adapter.tfMobileModel);
+        MainActivity.syncValues(adapter.tfLiteModel);
+    }
+
 
 
     @Override
@@ -81,8 +90,8 @@ public class MainActivity extends BaseActivity {
         return false;
     }
     public static File getFileInDownloadsDir() {
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),"skccDataExport.txt");
-
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+                "skccDataExport_"+ String.valueOf(Model.DIM_IMG_SIZE_IN_X) +".txt");
         return file;
     }
 
