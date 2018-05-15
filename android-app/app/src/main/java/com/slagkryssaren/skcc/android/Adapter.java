@@ -22,7 +22,6 @@ import com.slagkryssaren.skcc.android.models.TfLiteModel;
 import com.slagkryssaren.skcc.android.models.TfMobileModel;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 
 public class Adapter extends BaseAdapter implements AdapterView.OnItemClickListener{
@@ -31,11 +30,11 @@ public class Adapter extends BaseAdapter implements AdapterView.OnItemClickListe
     //Create model classes
     public TfLiteModel tfLiteModel;
     public TfMobileModel tfMobileModel;
-    private Context c;
+    private Context context;
 
 
     Adapter(@NonNull Activity a) {
-        c = a.getApplicationContext();
+        context = a;
         try {
             tfLiteModel = new TfLiteModel(a);
             tfMobileModel = new TfMobileModel(a);
@@ -49,8 +48,7 @@ public class Adapter extends BaseAdapter implements AdapterView.OnItemClickListe
         ImageView imageView;
         if (convertView == null) {
             // if it's not recycled, initialize some attributes
-            imageView = new ImageView(c);
-            imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            imageView = new ImageView(context);
             //imageView.setMaxHeight(.getWidth());
             imageView.setAdjustViewBounds(true);
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
@@ -85,7 +83,7 @@ public class Adapter extends BaseAdapter implements AdapterView.OnItemClickListe
     }
 
     void runInference(int position, boolean tflite, boolean tfmobile, boolean display){
-        Bitmap input = BitmapFactory.decodeResource(c.getResources(), drawables[position]);
+        Bitmap input = BitmapFactory.decodeResource(context.getResources(), drawables[position]);
         input = Bitmap.createScaledBitmap(input, Model.DIM_IMG_SIZE_IN_X, Model.DIM_IMG_SIZE_IN_Y, false);
         Bitmap outputTfLite = null;
         Bitmap outputTfMobile = null;
@@ -96,7 +94,7 @@ public class Adapter extends BaseAdapter implements AdapterView.OnItemClickListe
             outputTfMobile = tfMobileModel.predictImage(input,position);
         }
         if (display){
-            c.startActivity(new Intent(c, DisplayActivity.class)
+            context.startActivity(new Intent(context, DisplayActivity.class)
                     .putExtra("outputTfMobile",outputTfMobile)
                     .putExtra("outputTfLite",outputTfLite)
                     .putExtra("timeTflite",String.valueOf(tfLiteModel.values.get(tfLiteModel.values.size()-1).getY()))

@@ -40,8 +40,9 @@ public class DisplayActivity extends BaseActivity {
 
         tfLiteView.setImageBitmap(outputTfLite);
         tfMobileView.setImageBitmap(outputTfMobile);
-        originalView.setImageDrawable(getDrawable(originalDrawable));
-        targetView.setImageDrawable(getDrawable(targetDrawable));
+
+        originalView.setImageDrawable(getResources().getDrawable(originalDrawable));
+        targetView.setImageDrawable(getResources().getDrawable(targetDrawable));
         textTimeTflite.setText(timeTflite);
         textTimeTfmobile.setText(timeTfmobile);
 

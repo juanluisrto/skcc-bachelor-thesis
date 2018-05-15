@@ -1,32 +1,19 @@
 package com.slagkryssaren.skcc.android;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.os.Build;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+import android.provider.MediaStore;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.slagkryssaren.skcc.android.BaseActivity;
-import com.slagkryssaren.skcc.android.R;
 import com.slagkryssaren.skcc.android.models.Model;
 
 import static com.slagkryssaren.skcc.android.MainActivity.adapter;
 
 public class CameraActivity extends BaseActivity {
 
-    private ImageView photoTflite, photoTfMobile;
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    private ImageView photoTflite, photoTfMobile;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,11 +22,13 @@ public class CameraActivity extends BaseActivity {
         this.photoTfMobile = (ImageView) this.findViewById(R.id.photoTfMobile);
         dispatchTakePictureIntent();
     }
+
     @Override
-    public  void onResume() {
+    public void onResume() {
         super.onResume();
 
     }
+
     @Override
     public void onPause() {
         super.onPause();
@@ -55,13 +44,19 @@ public class CameraActivity extends BaseActivity {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            int squareSize = Math.min(160,Math.min(imageBitmap.getWidth(),imageBitmap.getHeight()));
-            imageBitmap = Bitmap.createBitmap(imageBitmap, imageBitmap.getWidth()/2-squareSize/2, imageBitmap.getHeight()/2-squareSize/2, squareSize, squareSize);
+            int squareSize = Math.min(Model.DIM_IMG_SIZE_IN_X, Math.min(imageBitmap.getWidth(), imageBitmap.getHeight()));
+
+            imageBitmap = Bitmap.createBitmap(imageBitmap,
+                    imageBitmap.getWidth() / 2 - squareSize / 2,
+                    imageBitmap.getHeight() / 2 - squareSize / 2,
+                    squareSize,
+                    squareSize);
             adapter.tfLiteModel.adaptDimensions(imageBitmap);
             adapter.tfMobileModel.adaptDimensions(imageBitmap);
             Bitmap outputLite = adapter.tfLiteModel.predictImage(imageBitmap);

@@ -1,21 +1,12 @@
 package com.slagkryssaren.skcc.android.models;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.SystemClock;
 import android.util.Log;
-import android.widget.Toast;
-
-import com.slagkryssaren.skcc.android.models.Model;
 
 import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
-
-import java.io.IOException;
-import java.nio.Buffer;
-import java.nio.ByteBuffer;
-import java.nio.FloatBuffer;
 
 import lecho.lib.hellocharts.model.PointValue;
 
@@ -25,22 +16,20 @@ import lecho.lib.hellocharts.model.PointValue;
 
 public class TfMobileModel extends Model {
 
-    private TensorFlowInferenceInterface infInterface;
-    private static final String MODEL_PATH = "skcc_model.pb";
-    private String inputName = "conv2d_1_input";
-    private String outputName = "output_node"; //conv2d_8/Sigmoid";
-
     protected static final String TAG = "TfMobile:";
+    private static final String MODEL_PATH = "skcc_model.pb";
+    private TensorFlowInferenceInterface infInterface;
+    private String inputName = "conv2d_1_input";
+    private String outputName = "conv2d_8/Sigmoid";
 
 
-    public TfMobileModel(Activity a){
+    public TfMobileModel(Activity a) {
 
         this.context = a.getApplicationContext();
         infInterface = new TensorFlowInferenceInterface(context.getAssets(), MODEL_PATH);
         inputData = new float[DIM_IMG_SIZE_IN_X * DIM_IMG_SIZE_IN_Y];
         outputData = new float[DIM_IMG_SIZE_OUT_X * DIM_IMG_SIZE_OUT_Y];
     }
-
 
 
     @Override
@@ -52,14 +41,16 @@ public class TfMobileModel extends Model {
 
         inputData = convertBitmapToFloatArray(bitmap);
         long startTime = SystemClock.uptimeMillis();
-        infInterface.feed(inputName,(float[]) inputData, 1, DIM_IMG_SIZE_IN_X, DIM_IMG_SIZE_IN_Y, 1);
+        infInterface.feed(inputName, (float[]) inputData, 1, DIM_IMG_SIZE_IN_X, DIM_IMG_SIZE_IN_Y, 1);
         infInterface.run(new String[]{outputName}, true);
-        infInterface.fetch(outputName, (float [])outputData);
+        infInterface.fetch(outputName, (float[]) outputData);
         long endTime = SystemClock.uptimeMillis();
 
 
         long milliseconds = endTime - startTime;
-        if (position != -1){ values.add(new PointValue((float) position, (float) milliseconds));}
+        if (position != -1) {
+            values.add(new PointValue((float) position, (float) milliseconds));
+        }
         Log.d(TAG, "Timecost to run model inference: " + Long.toString(endTime - startTime));
 
         Bitmap outputImage = convertFloatArrayToBitmap(outputData);
@@ -69,7 +60,7 @@ public class TfMobileModel extends Model {
     @Override
     protected float[] convertBitmapToFloatArray(Bitmap bitmap) {
 
-        float[] input = new float[DIM_IMG_SIZE_IN_X*DIM_IMG_SIZE_IN_Y];
+        float[] input = new float[DIM_IMG_SIZE_IN_X * DIM_IMG_SIZE_IN_Y];
 
         float min = Float.MAX_VALUE;
         float max = Float.MIN_VALUE;
@@ -93,7 +84,7 @@ public class TfMobileModel extends Model {
         }
 
         //Normalize the image
-        for (int i = 0; i < input.length; ++i) {
+        for (int i = 0; i < input.length; i++) {
             input[i] = map(input[i], min, max, 0, 1);
         }
 
@@ -105,10 +96,10 @@ public class TfMobileModel extends Model {
 
     @Override
     protected Bitmap convertFloatArrayToBitmap(Object o) {
-        float[] output = (float []) o;
+        float[] output = (float[]) o;
         int[] intPixels = new int[DIM_IMG_SIZE_OUT_X * DIM_IMG_SIZE_OUT_Y];
         int pixel = 0;
-        for (int i = 0; i < output.length; ++i) {
+        for (int i = 0; i < intPixels.length; i++) {
             float floatPixel = output[i];
             int color = (int) map(1 - floatPixel, 0, 255);
             intPixels[pixel] = Color.rgb(color, color, color);
@@ -119,10 +110,9 @@ public class TfMobileModel extends Model {
         return bitmap;
     }
 
-    public void adaptDimensions(Bitmap b){
+    public void adaptDimensions(Bitmap b) {
         super.changeDefaultDimensions(b);
     }
-
 
 
 }

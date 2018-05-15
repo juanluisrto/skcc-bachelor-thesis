@@ -124,8 +124,8 @@ public abstract class Model {
         bitmap.getPixels(intValues, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
         // Convert the image to floating point.
         int pixel = 0;
-        for (int i = 0; i < DIM_IMG_SIZE_IN_X; ++i) {
-            for (int j = 0; j < DIM_IMG_SIZE_IN_Y; ++j) {
+        for (int i = 0; i < DIM_IMG_SIZE_IN_X; i++) {
+            for (int j = 0; j < DIM_IMG_SIZE_IN_Y; j++) {
                 final int val = intValues[pixel];
                 int red = Color.red(val);
                 int green = Color.green(val);

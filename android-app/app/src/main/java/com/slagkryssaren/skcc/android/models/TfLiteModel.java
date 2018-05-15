@@ -7,17 +7,11 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.SystemClock;
 import android.util.Log;
-import android.widget.Toast;
-
-import com.slagkryssaren.skcc.android.models.Model;
 
 import org.tensorflow.lite.Interpreter;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
@@ -35,11 +29,12 @@ public class TfLiteModel extends Model {
      * Name of the model file stored in Assets.
      */
     protected static final String TAG = "Tflite:";
-    private static final String MODEL_PATH = "skccmodel.tflite";/**
+    private static final String MODEL_PATH = "skccmodel.tflite";
+    public boolean neuralAPI = false;
+    /**
      * An instance of the driver class to run model inference with Tensorflow Lite.
      */
     private Interpreter tflite;
-    public boolean neuralAPI = false;
 
     public TfLiteModel(Activity a) throws IOException {
         inputData = new float[DIM_BATCH_SIZE][DIM_IMG_SIZE_IN_X][DIM_IMG_SIZE_IN_Y][DIM_PIXEL_SIZE];
@@ -63,18 +58,20 @@ public class TfLiteModel extends Model {
         long endTime = SystemClock.uptimeMillis();
         Bitmap outputImage = convertFloatArrayToBitmap(outputData);
 
-        Log.d(TAG,String.valueOf(tflite.getLastNativeInferenceDurationNanoseconds()));
+        Log.d(TAG, String.valueOf(tflite.getLastNativeInferenceDurationNanoseconds()));
         Log.d(TAG, "Timecost to run model inference: " + Long.toString(endTime - startTime));
 
         long milliseconds = endTime - startTime;
-        if (position != -1){ values.add(new PointValue((float) position, (float) milliseconds));}
+        if (position != -1) {
+            values.add(new PointValue((float) position, (float) milliseconds));
+        }
 
         return outputImage;
     }
 
     @Override
-    protected float [][][][] convertBitmapToFloatArray(Bitmap bitmap) {
-        float [][][][] input = new float[DIM_BATCH_SIZE][DIM_IMG_SIZE_IN_X][DIM_IMG_SIZE_IN_Y][DIM_PIXEL_SIZE];
+    protected float[][][][] convertBitmapToFloatArray(Bitmap bitmap) {
+        float[][][][] input = new float[DIM_BATCH_SIZE][DIM_IMG_SIZE_IN_X][DIM_IMG_SIZE_IN_Y][DIM_PIXEL_SIZE];
         float min = Float.MAX_VALUE;
         float max = Float.MIN_VALUE;
 
@@ -83,8 +80,8 @@ public class TfLiteModel extends Model {
         int pixel = 0;
         long startTime = SystemClock.uptimeMillis();
 
-        for (int i = 0; i < DIM_IMG_SIZE_IN_X; ++i) {
-            for (int j = 0; j < DIM_IMG_SIZE_IN_Y; ++j) {
+        for (int i = 0; i < DIM_IMG_SIZE_IN_X; i++) {
+            for (int j = 0; j < DIM_IMG_SIZE_IN_Y; j++) {
                 final int val = intValues[pixel];
                 int red = Color.red(val);
                 int green = Color.green(val);
@@ -100,8 +97,8 @@ public class TfLiteModel extends Model {
         }
 
         //Normalize the image
-        for (int i = 0; i < DIM_IMG_SIZE_IN_X; ++i) {
-            for (int j = 0; j < DIM_IMG_SIZE_IN_Y; ++j) {
+        for (int i = 0; i < DIM_IMG_SIZE_IN_X; i++) {
+            for (int j = 0; j < DIM_IMG_SIZE_IN_Y; j++) {
                 input[0][i][j][0] = map(input[0][i][j][0], min, max, 0, 1);
             }
         }
@@ -113,11 +110,11 @@ public class TfLiteModel extends Model {
 
     @Override
     protected Bitmap convertFloatArrayToBitmap(Object o) {
-        float [][][][] output = (float [][][][]) o;
+        float[][][][] output = (float[][][][]) o;
         int[] intPixels = new int[DIM_IMG_SIZE_OUT_X * DIM_IMG_SIZE_OUT_Y];
         int pixel = 0;
-        for (int i = 0; i < DIM_IMG_SIZE_OUT_X; ++i) {
-            for (int j = 0; j < DIM_IMG_SIZE_OUT_Y; ++j) {
+        for (int i = 0; i < DIM_IMG_SIZE_OUT_X; i++) {
+            for (int j = 0; j < DIM_IMG_SIZE_OUT_Y; j++) {
                 float floatPixel = output[0][i][j][0];
                 int color = (int) map(1 - floatPixel, 0, 255);
                 intPixels[pixel] = Color.rgb(color, color, color);
@@ -143,13 +140,13 @@ public class TfLiteModel extends Model {
     }
 
 
-    public void adaptDimensions(Bitmap b){
+    public void adaptDimensions(Bitmap b) {
         super.changeDefaultDimensions(b);
         inputData = new float[DIM_BATCH_SIZE][DIM_IMG_SIZE_IN_X][DIM_IMG_SIZE_IN_Y][DIM_PIXEL_SIZE];
         outputData = new float[DIM_BATCH_SIZE][DIM_IMG_SIZE_OUT_X][DIM_IMG_SIZE_OUT_Y][DIM_PIXEL_SIZE];
 
-        int[] dims = {1,b.getWidth(),b.getHeight(),1};
-        tflite.resizeInput(0,dims);
+        int[] dims = {1, b.getWidth(), b.getHeight(), 1};
+        tflite.resizeInput(0, dims);
     }
 
     /**
@@ -161,7 +158,7 @@ public class TfLiteModel extends Model {
     }
 
     @Override
-    public void resetDefaultDimensions(){
+    public void resetDefaultDimensions() {
         super.resetDefaultDimensions();
         tflite.resizeInput(0, new int[]{1, Model.DIM_IMG_SIZE_IN_X, Model.DIM_IMG_SIZE_IN_Y, 1});
     }
