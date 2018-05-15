@@ -1,4 +1,4 @@
-FROM tensorflow/tensorflow:1.5.0-rc1-py3
+FROM tensorflow/tensorflow:1.7.1-py3
 
 ENV KERAS_BACKEND "tensorflow"
 ENV LC_ALL=C.UTF-8

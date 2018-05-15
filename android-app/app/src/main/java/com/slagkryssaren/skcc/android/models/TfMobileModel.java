@@ -28,7 +28,7 @@ public class TfMobileModel extends Model {
     private TensorFlowInferenceInterface infInterface;
     private static final String MODEL_PATH = "skcc_model.pb";
     private String inputName = "conv2d_1_input";
-    private String outputName = "conv2d_9/Sigmoid";
+    private String outputName = "output_node"; //conv2d_8/Sigmoid";
 
     protected static final String TAG = "TfMobile:";
 
