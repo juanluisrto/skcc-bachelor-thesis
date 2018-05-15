@@ -24,6 +24,7 @@ public class SettingsActivity extends BaseActivity {
     private int numberOfImages = 10;
     private Context c;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,5 +116,13 @@ public class SettingsActivity extends BaseActivity {
     @Override
     int getNavigationMenuItemId() {
         return R.id.settings;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        TextView resolution = findViewById(R.id.resolution);
+        resolution.setText("Image resolution: " + String.valueOf(Model.DIM_IMG_SIZE_IN_X) + "x" + String.valueOf(Model.DIM_IMG_SIZE_IN_X));
+
     }
 }

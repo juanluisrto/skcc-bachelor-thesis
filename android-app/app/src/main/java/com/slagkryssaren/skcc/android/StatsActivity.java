@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 
 import com.google.gson.Gson;
@@ -94,8 +95,12 @@ public class StatsActivity extends BaseActivity {
         chart.setZoomEnabled(true);
         chart.setLineChartData(data);
         final Viewport v = new Viewport(chart.getMaximumViewport());
-        v.bottom = Math.min(tfliteValues.get(0).getY(),tfMobileValues.get(0).getY()) - 300;
-        v.top = Math.max(tfliteValues.get(0).getY(),tfMobileValues.get(0).getY()) + 300;
+        try {
+            v.bottom = Math.min(tfliteValues.get(0).getY(), tfMobileValues.get(0).getY()) - 300;
+            v.top = Math.max(tfliteValues.get(0).getY(), tfMobileValues.get(0).getY()) + 300;
+        } catch (IndexOutOfBoundsException e){
+            Log.e("error",e.getMessage());
+        }
         chart.setMaximumViewport(v);
 
 

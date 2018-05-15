@@ -55,7 +55,7 @@ freeline_project_description.json
 #Ipython notebooks
 old_text-detector.ipynb
 
-*.png
+# *.png
 /**/targets/
 **/images/
 
