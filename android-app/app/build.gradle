@@ -74,6 +74,5 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    implementation 'com.github.ceryle:FitGridView:v1.0.5'
     testImplementation 'junit:junit:4.12'
 }
