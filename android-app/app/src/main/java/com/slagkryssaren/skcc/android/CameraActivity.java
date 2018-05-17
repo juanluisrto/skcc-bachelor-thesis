@@ -51,14 +51,14 @@ public class CameraActivity extends BaseActivity {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             int squareSize = Math.min(Model.DIM_IMG_SIZE_IN_X, Math.min(imageBitmap.getWidth(), imageBitmap.getHeight()));
-
             imageBitmap = Bitmap.createBitmap(imageBitmap,
                     imageBitmap.getWidth() / 2 - squareSize / 2,
                     imageBitmap.getHeight() / 2 - squareSize / 2,
                     squareSize,
                     squareSize);
-            adapter.tfLiteModel.adaptDimensions(imageBitmap);
-            adapter.tfMobileModel.adaptDimensions(imageBitmap);
+            adapter.tfLiteModel.changeDefaultDimensions(imageBitmap);
+            adapter.tfMobileModel.changeDefaultDimensions(imageBitmap);
+
             Bitmap outputLite = adapter.tfLiteModel.predictImage(imageBitmap);
             Bitmap outputMobile = adapter.tfMobileModel.predictImage(imageBitmap);
             photoTflite.setImageBitmap(outputLite);

@@ -49,6 +49,7 @@ public class Adapter extends BaseAdapter implements AdapterView.OnItemClickListe
         if (convertView == null) {
             // if it's not recycled, initialize some attributes
             imageView = new ImageView(context);
+
             //imageView.setMaxHeight(.getWidth());
             imageView.setAdjustViewBounds(true);
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
@@ -115,6 +116,7 @@ public class Adapter extends BaseAdapter implements AdapterView.OnItemClickListe
             R.drawable.img_36,  R.drawable.img_37,  R.drawable.img_38,  R.drawable.img_39,  R.drawable.img_40,  R.drawable.img_41,
             R.drawable.img_42,  R.drawable.img_43,  R.drawable.img_44,  R.drawable.img_45,  R.drawable.img_46,  R.drawable.img_47,
             R.drawable.img_48,  R.drawable.img_49};
+
     public int[] targets = {
             R.drawable.target_0,  R.drawable.target_1,  R.drawable.target_2,  R.drawable.target_3,  R.drawable.target_4,  R.drawable.target_5,
             R.drawable.target_6,  R.drawable.target_7,  R.drawable.target_8,  R.drawable.target_9,  R.drawable.target_10,  R.drawable.target_11,
@@ -125,5 +127,27 @@ public class Adapter extends BaseAdapter implements AdapterView.OnItemClickListe
             R.drawable.target_36,  R.drawable.target_37,  R.drawable.target_38,  R.drawable.target_39,  R.drawable.target_40,  R.drawable.target_41,
             R.drawable.target_42,  R.drawable.target_43,  R.drawable.target_44,  R.drawable.target_45,  R.drawable.target_46,  R.drawable.target_47,
             R.drawable.target_48,  R.drawable.target_49};
+
+    public int[] drawables_240 = {
+            R.drawable.img_240_0,  R.drawable.img_240_1,  R.drawable.img_240_2,  R.drawable.img_240_3,  R.drawable.img_240_4,  R.drawable.img_240_5,
+            R.drawable.img_240_6,  R.drawable.img_240_7,  R.drawable.img_240_8,  R.drawable.img_240_9,  R.drawable.img_240_10,  R.drawable.img_240_11,
+            R.drawable.img_240_12,  R.drawable.img_240_13,  R.drawable.img_240_14,  R.drawable.img_240_15,  R.drawable.img_240_16,  R.drawable.img_240_17,
+            R.drawable.img_240_18,  R.drawable.img_240_19,  R.drawable.img_240_20,  R.drawable.img_240_21,  R.drawable.img_240_22,  R.drawable.img_240_23,
+            R.drawable.img_240_24,  R.drawable.img_240_25,  R.drawable.img_240_26,  R.drawable.img_240_27,  R.drawable.img_240_28,  R.drawable.img_240_29,
+            R.drawable.img_240_30,  R.drawable.img_240_31,  R.drawable.img_240_32,  R.drawable.img_240_33,  R.drawable.img_240_34,  R.drawable.img_240_35,
+            R.drawable.img_240_36,  R.drawable.img_240_37,  R.drawable.img_240_38,  R.drawable.img_240_39,  R.drawable.img_240_40,  R.drawable.img_240_41,
+            R.drawable.img_240_42,  R.drawable.img_240_43,  R.drawable.img_240_44,  R.drawable.img_240_45,  R.drawable.img_240_46,  R.drawable.img_240_47,
+            R.drawable.img_240_48,  R.drawable.img_240_49};
+
+    public int[] drawables_320 = {
+            R.drawable.img_320_0,  R.drawable.img_320_1,  R.drawable.img_320_2,  R.drawable.img_320_3,  R.drawable.img_320_4,  R.drawable.img_320_5,
+            R.drawable.img_320_6,  R.drawable.img_320_7,  R.drawable.img_320_8,  R.drawable.img_320_9,  R.drawable.img_320_10,  R.drawable.img_320_11,
+            R.drawable.img_320_12,  R.drawable.img_320_13,  R.drawable.img_320_14,  R.drawable.img_320_15,  R.drawable.img_320_16,  R.drawable.img_320_17,
+            R.drawable.img_320_18,  R.drawable.img_320_19,  R.drawable.img_320_20,  R.drawable.img_320_21,  R.drawable.img_320_22,  R.drawable.img_320_23,
+            R.drawable.img_320_24,  R.drawable.img_320_25,  R.drawable.img_320_26,  R.drawable.img_320_27,  R.drawable.img_320_28,  R.drawable.img_320_29,
+            R.drawable.img_320_30,  R.drawable.img_320_31,  R.drawable.img_320_32,  R.drawable.img_320_33,  R.drawable.img_320_34,  R.drawable.img_320_35,
+            R.drawable.img_320_36,  R.drawable.img_320_37,  R.drawable.img_320_38,  R.drawable.img_320_39,  R.drawable.img_320_40,  R.drawable.img_320_41,
+            R.drawable.img_320_42,  R.drawable.img_320_43,  R.drawable.img_320_44,  R.drawable.img_320_45,  R.drawable.img_320_46,  R.drawable.img_320_47,
+            R.drawable.img_320_48,  R.drawable.img_320_49};
 
 }

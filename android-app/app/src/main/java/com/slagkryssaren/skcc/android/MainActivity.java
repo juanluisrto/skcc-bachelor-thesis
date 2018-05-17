@@ -22,6 +22,7 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 import lecho.lib.hellocharts.model.PointValue;
 
@@ -76,7 +77,14 @@ public class MainActivity extends BaseActivity {
         String oldJson = mPrefs.getString(m.getClass().getName(), "");;
 
         ArrayList<PointValue> savedValues = gson.fromJson(oldJson,listType);
-        if(savedValues!=null) {m.values.addAll(savedValues);}
+        if(savedValues!=null) {
+            for (PointValue s : savedValues) {
+                if (!m.values.contains(s)) {
+                    m.values.add(s);
+                }
+            }
+        }
+            //m.values.addAll(savedValues);}
 
         String newJson = gson.toJson(m.values);
         mPrefs.edit().putString(m.getClass().getName(),newJson).commit();
@@ -91,7 +99,7 @@ public class MainActivity extends BaseActivity {
     }
     public static File getFileInDownloadsDir() {
         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-                "skccDataExport_"+ String.valueOf(Model.DIM_IMG_SIZE_IN_X) +".txt");
+                "skccDataExport_pixel_" + new Random().nextInt(1000) +".txt");
         return file;
     }
 
@@ -108,13 +116,33 @@ public class MainActivity extends BaseActivity {
                 myOutWriter.append("NeuralNetworks API enabled:" + String.valueOf(adapter.tfLiteModel.neuralAPI) + "\n");
                 myOutWriter.append("Input image size: " + String.valueOf(Model.DIM_IMG_SIZE_IN_X)
                                     + "x" + String.valueOf(Model.DIM_IMG_SIZE_IN_Y) + "\n\n");
-                myOutWriter.append("TfMobile\n");
-                for (PointValue p : adapter.tfMobileModel.values){
+                myOutWriter.append("\n\nTfMobile_160px\n");
+                for (PointValue p : adapter.tfMobileModel.values_160){
                     String data = p.getX() + "  " + p.getY() + "\n";
                     myOutWriter.append(data);
                 }
-                myOutWriter.append("\n\nTfLite\n");
-                for (PointValue p : adapter.tfLiteModel.values){
+                myOutWriter.append("\n\nTfMobile_240px\n");
+                for (PointValue p : adapter.tfMobileModel.values_240){
+                    String data = p.getX() + "  " + p.getY() + "\n";
+                    myOutWriter.append(data);
+                }
+                myOutWriter.append("\n\nTfMobile_320px\n");
+                for (PointValue p : adapter.tfMobileModel.values_320){
+                    String data = p.getX() + "  " + p.getY() + "\n";
+                    myOutWriter.append(data);
+                }
+                myOutWriter.append("\n\nTfLite_160px\n");
+                for (PointValue p : adapter.tfLiteModel.values_160){
+                    String data = p.getX() + "  " + p.getY() + "\n";
+                    myOutWriter.append(data);
+                }
+                myOutWriter.append("\n\nTfLite_240px\n");
+                for (PointValue p : adapter.tfLiteModel.values_240){
+                    String data = p.getX() + "  " + p.getY() + "\n";
+                    myOutWriter.append(data);
+                }
+                myOutWriter.append("\n\nTfLite_320px\n");
+                for (PointValue p : adapter.tfLiteModel.values_320){
                     String data = p.getX() + "  " + p.getY() + "\n";
                     myOutWriter.append(data);
                 }

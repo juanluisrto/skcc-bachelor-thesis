@@ -17,8 +17,6 @@ public class DisplayActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
     }
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onResume() {
         super.onResume();

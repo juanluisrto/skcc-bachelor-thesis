@@ -58,8 +58,8 @@ public class TfLiteModel extends Model {
         long endTime = SystemClock.uptimeMillis();
         Bitmap outputImage = convertFloatArrayToBitmap(outputData);
 
-        Log.d(TAG, String.valueOf(tflite.getLastNativeInferenceDurationNanoseconds()));
-        Log.d(TAG, "Timecost to run model inference: " + Long.toString(endTime - startTime));
+        Log.d(TAG,String.valueOf(tflite.getLastNativeInferenceDurationNanoseconds()));
+        Log.d(TAG, "Position: " + String.valueOf(position) + " Timecost to run model inference: " + Long.toString(endTime - startTime));
 
         long milliseconds = endTime - startTime;
         if (position != -1) {
@@ -140,13 +140,12 @@ public class TfLiteModel extends Model {
     }
 
 
-    public void adaptDimensions(Bitmap b) {
-        super.changeDefaultDimensions(b);
+    public void changeDefaultDimensions(int dimX, int dimY){
+        super.changeDefaultDimensions(dimX,dimY);
         inputData = new float[DIM_BATCH_SIZE][DIM_IMG_SIZE_IN_X][DIM_IMG_SIZE_IN_Y][DIM_PIXEL_SIZE];
         outputData = new float[DIM_BATCH_SIZE][DIM_IMG_SIZE_OUT_X][DIM_IMG_SIZE_OUT_Y][DIM_PIXEL_SIZE];
-
-        int[] dims = {1, b.getWidth(), b.getHeight(), 1};
-        tflite.resizeInput(0, dims);
+        int[] dims = {1,dimX,dimY,1};
+        tflite.resizeInput(0,dims);
     }
 
     /**

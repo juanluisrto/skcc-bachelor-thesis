@@ -48,10 +48,11 @@ public class TfMobileModel extends Model {
 
 
         long milliseconds = endTime - startTime;
-        if (position != -1) {
+
+        if (position != -1){
             values.add(new PointValue((float) position, (float) milliseconds));
         }
-        Log.d(TAG, "Timecost to run model inference: " + Long.toString(endTime - startTime));
+        Log.d(TAG, "Position: " + String.valueOf(position) + " Timecost to run model inference: " + Long.toString(endTime - startTime));
 
         Bitmap outputImage = convertFloatArrayToBitmap(outputData);
         return outputImage;
@@ -110,8 +111,10 @@ public class TfMobileModel extends Model {
         return bitmap;
     }
 
-    public void adaptDimensions(Bitmap b) {
-        super.changeDefaultDimensions(b);
+    public void changeDefaultDimensions(int dimX, int dimY){
+        super.changeDefaultDimensions(dimX,dimY);
+        inputData = new float[DIM_IMG_SIZE_IN_X * DIM_IMG_SIZE_IN_Y];
+        outputData = new float[DIM_IMG_SIZE_OUT_X * DIM_IMG_SIZE_OUT_Y];
     }
 
 

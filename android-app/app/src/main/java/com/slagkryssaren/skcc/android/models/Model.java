@@ -54,6 +54,9 @@ public abstract class Model {
     //SharedPreferences sharedPref = this.context.getSharedPreferences(Context.MODE_PRIVATE);
 
     public List<PointValue> values = new ArrayList<PointValue>();
+    public List<PointValue> values_160 = new ArrayList<PointValue>();
+    public List<PointValue> values_240 = new ArrayList<PointValue>();
+    public List<PointValue> values_320 = new ArrayList<PointValue>();
 
 
     public Bitmap predictImage(Bitmap bitmap){
@@ -86,20 +89,22 @@ public abstract class Model {
 
 
     public void changeDefaultDimensions(Bitmap b){
-        DIM_IMG_SIZE_IN_X = b.getWidth();
-        DIM_IMG_SIZE_IN_Y = b.getHeight();
+        changeDefaultDimensions(b.getWidth(),b.getHeight());
+    }
+    public void changeDefaultDimensions( int dim){
+        changeDefaultDimensions(dim,dim);
+    }
+
+    public void changeDefaultDimensions( int dimX, int dimY){
+        DIM_IMG_SIZE_IN_X = dimX;
+        DIM_IMG_SIZE_IN_Y = dimY;
         DIM_IMG_SIZE_OUT_X = DIM_IMG_SIZE_IN_X / 2;
         DIM_IMG_SIZE_OUT_Y = DIM_IMG_SIZE_IN_Y / 2;
         intValues = new int[DIM_IMG_SIZE_IN_X * DIM_IMG_SIZE_IN_Y];
-
     }
 
     public void resetDefaultDimensions(){
-        DIM_IMG_SIZE_IN_X = IMAGE_RES;
-        DIM_IMG_SIZE_IN_Y = IMAGE_RES;
-        DIM_IMG_SIZE_OUT_X = DIM_IMG_SIZE_IN_X / 2;
-        DIM_IMG_SIZE_OUT_Y = DIM_IMG_SIZE_IN_Y / 2;
-        intValues = new int[DIM_IMG_SIZE_IN_X * DIM_IMG_SIZE_IN_Y];
+        changeDefaultDimensions(IMAGE_RES);
     }
 
 

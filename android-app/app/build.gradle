@@ -24,6 +24,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+
     }
 
     buildTypes {
@@ -59,11 +60,12 @@ dependencies {
 
 
     implementation 'org.tensorflow:tensorflow-android:1.8.0' //tf mobile
-    implementation 'org.tensorflow:tensorflow-lite:0.1.7' //tf lite :+@aar
+    implementation 'org.tensorflow:tensorflow-lite:0.1.7'//0.1.2-nightly' //tf lite :+@aar
     //https://bintray.com/google/tensorflow/tensorflow-lite#release
 
     implementation 'com.github.lecho:hellocharts-library:1.5.8@aar'
     //statistics library (much nicer)
+
     implementation 'com.google.code.gson:gson:2.8.2' //any object to Json
     //compile 'com.felipecsl.asymmetricgridview:library:2.0.1'
 
