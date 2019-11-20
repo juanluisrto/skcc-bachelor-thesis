@@ -1,29 +1,16 @@
-# Slagkryssaren Credit card #
+#  skcc-bachelor-thesis #
 
 
-This repo contains the Slagkryssaren Credit Card Reader.
-The purpose is to use Deep Learning to create a Credit Card reader which works on standard smart-phones.
+This repo contains the code for:
+- a credit card image generator
+- an android app developed for my bachelor thesis
+- the latex files to generate the final thesis report
 
-## Getting started
+## Thesis
+**Performance analysis of convolutional neural networks implemented with TensorFlow Lite and TensorFlow Mobile** 
 
-- Start the docker image with `docker-compose up`
-- In the log output, find a url similar to: _http://localhost:8888/?token=a765662297cd764843678564373b99de23e7687137_
-- Open the link in a browser to open the Jupyter web interface
+### Abstract
+TensorFlow is an open-source library developed by Google for machine learning applications. It can be run in different environments such as desktop computers, servers or even browsers. For running TensorFlow on mobile devices there exist TensorFlow Mobile and the recently launched TensorFlow Lite. The latter is an improved version of the former, which claims to have several performance advan- tages over its predecessor and is meant to substitute it on the long run. The goal of this study is to test and compare the performance of this two libraries when run- ning a convolutional neural network trained to analyze pictures of credit cards. An application was programmed to run the same network with both versions of TensorFlow and installed on several devices to measure their performance. The collected empirical data showed that TensorFlow Lite’s performance is still lower than its counterpart’s when running convolutional neural networks. This is due to the early stage of development of the library, which is not optimized enough yet.
 
-In the Jupyter interface there are two notebooks:
+The final paper can be read [here](https://github.com/juanluisrto/skcc-bachelor-thesis/blob/master/thesis/main.pdf)
 
-- _text-detector.ipynb_ contains the code that ties everything together, and is were you will try and build new models.
-- _binary classification.ipynb_ contains a simple example on how to classify dots as red or blue based on their position.
-
-### Jupyter - basic usage
-
-Each code block is executed by marking it and pressing SHIFT + ENTER
-
-## Work flow
-
-This project adheres to the git flow principles of working, where all work is performed in feature branches which are merged to the master branch.
-Before a branch is merged to master, it has to be reviewed approved in a pull request on bitbucket.
-
-The naming convention for feature branches is **feature/<feature_name>**.
-
-To keep the diff in the jupyter notebook file as small as possible please clear the output of all cells before submitting a pull reqeust. In the top menu click **Cell > All Output > Clear**
