@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/pics"
+        android:enabled="true"
+        android:icon="@drawable/ic_view_module_black_24dp"
+        android:textSize="15sp"
+        android:title="Pictures"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/camera"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_camera"
+        android:title="Camera"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/settings"
+        android:enabled="true"
+        android:icon="@drawable/ic_settings_black_24dp"
+        android:title="Settings"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/stats"
+        android:enabled="true"
+        android:icon="@drawable/ic_assessment_black_24dp"
+        android:title="Stats"
+        app:showAsAction="always" />
+</menu>

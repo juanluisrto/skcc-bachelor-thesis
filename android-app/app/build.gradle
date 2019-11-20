@@ -7,16 +7,24 @@ repositories {
     }
 }
 
+allprojects {
+    repositories {
+        maven { url "https://jitpack.io" }
+    }
+}
+
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
 
     defaultConfig {
         applicationId "com.slagkryssaren.skcc.android"
         minSdkVersion 19
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+
     }
 
     buildTypes {
@@ -31,24 +39,40 @@ android {
         noCompress "tflite"
     }
 
+
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
 }
 
 ext {
-    supportLibVersion = '26.1.0'
+    supportLibVersion = '27.+'
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "com.android.support:design:$supportLibVersion"
     implementation "com.android.support:appcompat-v7:$supportLibVersion"
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation "com.android.support:support-v4:$supportLibVersion"
+    implementation "com.android.support:support-vector-drawable:$supportLibVersion"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
 
-    compile 'org.tensorflow:tensorflow-lite:+'
+
+    implementation 'org.tensorflow:tensorflow-android:1.8.0' //tf mobile
+    implementation 'org.tensorflow:tensorflow-lite:0.1.7'//0.1.2-nightly' //tf lite :+@aar
+    //https://bintray.com/google/tensorflow/tensorflow-lite#release
+
+    implementation 'com.github.lecho:hellocharts-library:1.5.8@aar'
+    //statistics library (much nicer)
+
+    implementation 'com.google.code.gson:gson:2.8.2' //any object to Json
+    //compile 'com.felipecsl.asymmetricgridview:library:2.0.1'
+
 
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    implementation 'com.github.ceryle:FitGridView:v1.0.5'
     testImplementation 'junit:junit:4.12'
 }

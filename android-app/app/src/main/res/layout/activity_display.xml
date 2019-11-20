@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DisplayActivity">
+
+    <TextView
+        android:id="@+id/timeTfmobile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:layout_marginStart="8dp"
+        android:text="TextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintStart_toEndOf="@+id/textView5" />
+
+    <TextView
+        android:id="@+id/timeTflite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="70dp"
+        android:layout_marginStart="8dp"
+        android:text="TextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintStart_toEndOf="@+id/textView6" />
+
+    <ImageView
+        android:id="@+id/tflite"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="40dp"
+        android:contentDescription="Tensorflow Lite"
+        app:layout_constraintEnd_toStartOf="@+id/tfmobile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/original"
+        app:srcCompat="@drawable/img_0" />
+
+    <ImageView
+        android:id="@+id/tfmobile"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tflite"
+        app:layout_constraintTop_toBottomOf="@+id/target"
+        app:srcCompat="@drawable/img_0" />
+
+    <ImageView
+        android:id="@+id/target"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/original"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/img_0" />
+
+    <ImageView
+        android:id="@+id/original"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toStartOf="@+id/target"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/img_0" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Target"
+        app:layout_constraintBottom_toTopOf="@+id/target"
+        app:layout_constraintStart_toStartOf="@+id/target" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="7dp"
+        android:text="Original"
+        app:layout_constraintBottom_toTopOf="@+id/original"
+        app:layout_constraintStart_toStartOf="@+id/original" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="TensorflowLite"
+        app:layout_constraintBottom_toTopOf="@+id/tflite"
+        app:layout_constraintStart_toStartOf="@+id/tflite" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Tensorflow Mobile"
+        app:layout_constraintBottom_toTopOf="@+id/tfmobile"
+        app:layout_constraintStart_toStartOf="@+id/tfmobile"
+        tools:ignore="MissingConstraints" />
+
+
+    <include
+        android:id="@+id/navigation"
+        layout="@layout/element_bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:layout_marginStart="16dp"
+        android:text="Tensorflow Mobile:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="70dp"
+        android:layout_marginStart="16dp"
+        android:text="Tensorflow Lite:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</android.support.constraint.ConstraintLayout>
