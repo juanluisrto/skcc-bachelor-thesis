@@ -45,7 +45,7 @@ public class TfMobileModel extends Model {
         infInterface.run(new String[]{outputName}, true);
         infInterface.fetch(outputName, (float[]) outputData);
         long endTime = SystemClock.uptimeMillis();
-
+        Bitmap outputImage = convertFloatArrayToBitmap(outputData);
 
         long milliseconds = endTime - startTime;
 
@@ -54,7 +54,7 @@ public class TfMobileModel extends Model {
         }
         Log.d(TAG, "Position: " + String.valueOf(position) + " Timecost to run model inference: " + Long.toString(endTime - startTime));
 
-        Bitmap outputImage = convertFloatArrayToBitmap(outputData);
+
         return outputImage;
     }
 

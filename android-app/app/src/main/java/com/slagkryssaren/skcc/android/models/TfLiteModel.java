@@ -29,7 +29,7 @@ public class TfLiteModel extends Model {
      * Name of the model file stored in Assets.
      */
     protected static final String TAG = "Tflite:";
-    private static final String MODEL_PATH = "converted_model.tflite";
+    private static final String MODEL_PATH = "skccmodel.tflite";
     public boolean neuralAPI = false;
     /**
      * An instance of the driver class to run model inference with Tensorflow Lite.
